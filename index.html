@@ -128,19 +128,34 @@ PAGES.forEach(p => {
   grid.appendChild(card);
 });
 
-function openPage(p) {
+function setFrame(url) {
+  // Use location.replace on the iframe so iframe nav doesn't add to parent history.
+  // Setting iframe.src adds an entry, which would force two Back presses.
+  const frame = document.getElementById('pageFrame');
+  try { frame.contentWindow.location.replace(url); }
+  catch (e) { frame.src = url; }
+}
+
+function showPage(p, push) {
   document.getElementById('pageTitle').textContent = p.title;
   document.getElementById('indexView').style.display = 'none';
   document.getElementById('pageView').style.display = 'block';
-  document.getElementById('pageFrame').src = p.file;
-  history.pushState({ page: p.key }, '', '#' + p.key);
+  setFrame(p.file);
+  if (push) history.pushState({ page: p.key }, '', '#' + p.key);
 }
 
-function goBack() {
+function showIndex() {
   document.getElementById('pageView').style.display = 'none';
   document.getElementById('indexView').style.display = 'block';
-  document.getElementById('pageFrame').src = 'about:blank';
-  history.pushState({}, '', window.location.pathname);
+  setFrame('about:blank');
+}
+
+function openPage(p) { showPage(p, true); }
+
+function goBack() {
+  // Let the browser handle history — popstate will flip the view.
+  if (window.location.hash) history.back();
+  else showIndex();
 }
 
 // Deep-link support: open the demo if the URL has a hash
@@ -148,18 +163,16 @@ window.addEventListener('DOMContentLoaded', () => {
   const hash = window.location.hash.replace('#', '');
   if (hash) {
     const p = PAGES.find(x => x.key === hash);
-    if (p) openPage(p);
+    if (p) showPage(p, false);
   }
 });
 window.addEventListener('popstate', () => {
   const hash = window.location.hash.replace('#', '');
   if (hash) {
     const p = PAGES.find(x => x.key === hash);
-    if (p) openPage(p);
+    if (p) showPage(p, false); else showIndex();
   } else {
-    document.getElementById('pageView').style.display = 'none';
-    document.getElementById('indexView').style.display = 'block';
-    document.getElementById('pageFrame').src = 'about:blank';
+    showIndex();
   }
 });
 </script>
