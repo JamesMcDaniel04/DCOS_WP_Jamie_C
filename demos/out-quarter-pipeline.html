@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ITS DEMO TIME — Out-Quarter Pipeline | Q2–Q4 FY27</title>
+<style>
+:root {
+  --chblue: #00AEEF;
+  --chred:  #CC0000;
+  --navy:   #002244;
+  --white:  #FFFFFF;
+  --grey:   #6B7280;
+  --chblue-lt: #E0F6FE;
+  --chred-lt:  #FFF0F0;
+  --amber: #D97706; --amber-lt: #FFFBEB;
+  --green: #16A34A; --green-lt: #F0FDF4;
+  --purple: #7C3AED; --purple-lt: #F5F3FF;
+  --bg: #F0F7FF;
+  --font: 'Inter', system-ui, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font); background: var(--bg); color: var(--navy); font-size: 13px; line-height: 1.5; }
+
+/* HEADER */
+.hdr { background: var(--navy); color: var(--white); padding: 20px 36px; display: flex; align-items: center; justify-content: space-between; }
+.logo { display: flex; align-items: center; gap: 0; }
+.logo-badge {
+  background: linear-gradient(135deg, var(--chblue), #0080CC);
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: .04em;
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(0,174,239,.4);
+  border: 2px solid rgba(255,255,255,.2);
+}
+.logo-badge .star { color: var(--chred); font-size: 18px; }
+.hdr-meta { text-align: right; }
+.hdr-meta .title { font-size: 15px; font-weight: 700; }
+.hdr-meta .sub { font-size: 11px; color: rgba(255,255,255,.55); margin-top: 3px; }
+.accent-bar { height: 5px; background: linear-gradient(90deg, var(--chblue) 0%, var(--white) 50%, var(--chred) 100%); }
+
+/* LAYOUT */
+.wrap { max-width: 1280px; margin: 0 auto; padding: 28px 20px; }
+.sec { margin-bottom: 36px; }
+.sec-title { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--grey); border-left: 4px solid var(--chblue); padding-left: 10px; margin-bottom: 14px; }
+
+/* ALERT */
+.alert { background: var(--chred-lt); border: 1px solid #FFAAAA; border-left: 5px solid var(--chred); border-radius: 8px; padding: 13px 18px; margin-bottom: 28px; font-size: 13px; line-height: 1.6; }
+.alert strong { color: var(--chred); }
+
+/* KPI */
+.kpi-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 14px; }
+.kpi { background: var(--white); border-radius: 8px; border: 1px solid #DDEEFF; padding: 16px 18px; border-top: 3px solid var(--grey); }
+.kpi.blue  { border-top-color: var(--chblue); }
+.kpi.red   { border-top-color: var(--chred); }
+.kpi.green { border-top-color: var(--green); }
+.kpi.purple{ border-top-color: var(--purple); }
+.kpi.navy  { border-top-color: var(--navy); }
+.kpi-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--grey); margin-bottom: 5px; }
+.kpi-val { font-size: 26px; font-weight: 900; line-height: 1; }
+.kpi-val.danger  { color: var(--chred); }
+.kpi-val.warning { color: var(--amber); }
+.kpi-val.ok      { color: var(--green); }
+.kpi-sub { font-size: 11px; color: var(--grey); margin-top: 4px; }
+.badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; margin-top: 5px; text-transform: uppercase; letter-spacing: .05em; }
+.b-red    { background: var(--chred-lt); color: var(--chred); }
+.b-amber  { background: var(--amber-lt); color: var(--amber); }
+.b-green  { background: var(--green-lt); color: var(--green); }
+.b-purple { background: var(--purple-lt); color: var(--purple); }
+.b-blue   { background: var(--chblue-lt); color: #005B8E; }
+
+/* SLIP BANNER */
+.slip-banner { background: var(--purple-lt); border: 1px solid #C4B5FD; border-left: 5px solid var(--purple); border-radius: 8px; padding: 13px 18px; margin-bottom: 28px; font-size: 13px; line-height: 1.7; }
+.slip-banner strong { color: var(--purple); }
+
+/* MATH WATERFALL */
+.math-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 24px; }
+.math-card { background: var(--white); border-radius: 8px; border: 1px solid #DDEEFF; overflow: hidden; }
+.math-hdr { padding: 12px 16px; font-weight: 800; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
+.q2-hdr { background: var(--chblue-lt); color: #005B8E; border-bottom: 2px solid #99DDFF; }
+.q3-hdr { background: #FFF0F0; color: var(--chred); border-bottom: 2px solid #FFAAAA; }
+.q4-hdr { background: #F0F7FF; color: var(--navy); border-bottom: 2px solid #99CCEE; }
+.math-body { padding: 0; }
+.math-row { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 16px; border-bottom: 1px solid #F3F4F6; font-size: 12px; }
+.math-row:last-child { border-bottom: none; }
+.math-row .ml { color: var(--grey); }
+.math-row .mr { font-weight: 700; }
+.math-row.minus .ml { color: var(--chred); }
+.math-row.minus .mr { color: var(--chred); }
+.math-row.result-ok  { background: var(--green-lt); }
+.math-row.result-ok .ml,.math-row.result-ok .mr { color: var(--green); font-weight: 800; }
+.math-row.result-warn { background: var(--amber-lt); }
+.math-row.result-warn .ml,.math-row.result-warn .mr { color: var(--amber); font-weight: 800; }
+.math-row.result-bad  { background: var(--chred-lt); }
+.math-row.result-bad .ml,.math-row.result-bad .mr { color: var(--chred); font-weight: 800; }
+.math-row.total-row { background: #F0F7FF; font-weight: 700; }
+.math-section-lbl { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: var(--grey); padding: 6px 16px 2px; background: #FAFBFF; border-top: 1px solid #DDEEFF; border-bottom: 1px solid #F3F4F6; }
+.coverage-chip { font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 20px; }
+.cov-ok     { background: var(--green-lt); color: var(--green); }
+.cov-warn   { background: var(--amber-lt); color: var(--amber); }
+.cov-danger { background: var(--chred-lt); color: var(--chred); }
+
+/* Q1 SLIP SECTION */
+.q1-slip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.slip-card { background: var(--white); border-radius: 8px; border: 1px solid #E9D5FF; border-left: 4px solid var(--purple); padding: 14px 16px; }
+.slip-card-title { font-weight: 700; font-size: 13px; color: var(--purple); margin-bottom: 10px; }
+.slip-mini-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.slip-mini-table th { background: #F5F3FF; color: var(--purple); padding: 6px 8px; text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: .05em; }
+.slip-mini-table td { padding: 7px 8px; border-bottom: 1px solid #F3F4F6; }
+.slip-mini-table tr:last-child td { border-bottom: none; }
+.slip-total { font-size: 12px; color: var(--grey); padding: 8px 4px 0; border-top: 1px solid #E9D5FF; margin-top: 8px; }
+.slip-total strong { color: var(--purple); font-size: 14px; }
+
+/* DEAL EXPLORER */
+.explorer { background: var(--white); border-radius: 8px; border: 1px solid #DDEEFF; overflow: hidden; }
+.explorer-toolbar { padding: 12px 16px; background: #F0F7FF; border-bottom: 1px solid #DDEEFF; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.tb-label { font-size: 11px; font-weight: 700; color: var(--grey); text-transform: uppercase; letter-spacing: .05em; }
+.filter-group { display: flex; gap: 6px; }
+.filter-btn { border: 1px solid #DDEEFF; background: var(--white); border-radius: 6px; padding: 4px 12px; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--grey); transition: all .15s; }
+.filter-btn:hover { border-color: var(--chblue); color: var(--chblue); }
+.filter-btn.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+.filter-btn.q2a.active { background: #005B8E; border-color: #005B8E; color:white; }
+.filter-btn.q3a.active { background: var(--chred); border-color: var(--chred); color:white; }
+.filter-btn.q4a.active { background: var(--navy); border-color: var(--navy); color:white; }
+.filter-btn.fvanity.active { background: #854D0E; border-color: #854D0E; color:white; }
+.filter-btn.fslip.active   { background: var(--chred); border-color: var(--chred); color:white; }
+.search-box { border: 1px solid #DDEEFF; border-radius: 6px; padding: 4px 10px; font-size: 12px; font-family: var(--font); outline: none; width: 190px; }
+.search-box:focus { border-color: var(--chblue); }
+.deals-count { font-size: 12px; color: var(--grey); margin-left: auto; }
+
+/* DEAL TABLE */
+.deal-table-wrap { overflow-x: auto; max-height: 620px; overflow-y: auto; }
+table.dtbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+table.dtbl thead th { background: var(--navy); color: var(--white); padding: 9px 10px; text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; position: sticky; top: 0; z-index: 2; white-space: nowrap; cursor:pointer; }
+table.dtbl thead th:hover { background: #003366; }
+table.dtbl tbody tr.dr { cursor: pointer; }
+table.dtbl tbody tr.dr:hover td { background: var(--chblue-lt) !important; }
+table.dtbl tbody tr.dr.exp td { background: #F0FDF4 !important; border-bottom: none !important; }
+table.dtbl td { padding: 8px 10px; border-bottom: 1px solid #F3F4F6; vertical-align: middle; }
+table.dtbl tbody tr.dr:nth-child(4n+1) td,
+table.dtbl tbody tr.dr:nth-child(4n+2) td { background: #FAFBFF; }
+.detail-row td { padding: 0 !important; border-bottom: none !important; }
+.dpanel { display: none; background: #F0F9FF; border-bottom: 2px solid #99DDFF; padding: 14px 18px 14px 40px; font-size: 12px; }
+.dpanel.open { display: block; }
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.ds-title { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; margin-bottom: 7px; }
+.ds-title.amber { color: var(--amber); }
+.ds-title.red   { color: var(--chred); }
+.ds-title.blue  { color: var(--chblue); }
+.ds-title.green { color: var(--green); }
+.flag-item { display: flex; gap: 7px; align-items: flex-start; margin-bottom: 6px; }
+.fdot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.fdot.red   { background: var(--chred); }
+.fdot.amber { background: var(--amber); }
+.fdot.green { background: var(--green); }
+.fdot.blue  { background: var(--chblue); }
+.ftext { color: var(--navy); line-height: 1.4; }
+.df { margin-bottom: 6px; }
+.df .dl { font-size: 10px; color: var(--grey); text-transform: uppercase; letter-spacing: .05em; }
+.df .dv { font-weight: 600; }
+.exp-icon { font-size: 10px; color: var(--grey); margin-right: 5px; }
+
+/* TAGS */
+.q-tag { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+.qt-q2 { background: var(--chblue-lt); color: #005B8E; }
+.qt-q3 { background: var(--chred-lt); color: var(--chred); }
+.qt-q4 { background: #E8F0F8; color: var(--navy); }
+.rbadge { padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 700; text-transform: uppercase; white-space:nowrap; }
+.rb-high   { background: var(--chred-lt); color: var(--chred); }
+.rb-medium { background: var(--amber-lt); color: var(--amber); }
+.rb-low    { background: var(--green-lt); color: var(--green); }
+.vbadge { background: #FEF9C3; color: #854D0E; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 700; }
+.hdot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 3px; vertical-align: middle; }
+.h-green  { background: var(--green); }
+.h-yellow { background: #EAB308; }
+.h-red    { background: var(--chred); }
+.h-black  { background: var(--navy); }
+.h-none   { background: #D1D5DB; }
+.acv-val { font-weight: 700; }
+
+/* REP TABLE */
+.rep-bar { height: 8px; border-radius: 4px; display: flex; overflow: hidden; min-width: 80px; }
+.rb-qual { background: var(--chblue); }
+.rb-van  { background: var(--chred); }
+
+/* RECS */
+.rec-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+.rec-card { background: var(--white); border-radius: 8px; border: 1px solid #DDEEFF; padding: 16px; }
+.rec-hdr { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 13px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #F3F4F6; }
+.rec-list { list-style: none; }
+.rec-list li { font-size: 12px; padding: 5px 0 5px 14px; position: relative; border-bottom: 1px solid #F9FAFB; line-height: 1.5; }
+.rec-list li::before { content: '→'; position: absolute; left: 0; color: var(--chblue); font-weight: 800; }
+.rec-list li:last-child { border-bottom: none; }
+
+/* TOOLTIP */
+.tip { display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; border-radius: 50%; background: rgba(255,255,255,.15); color: var(--white); font-size: 9px; font-weight: 800; cursor: help; margin-left: 4px; position: relative; }
+.tip:hover .tt { display: block; }
+.tt { display: none; position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%); background: var(--navy); color: var(--white); font-size: 11px; font-weight: 400; padding: 7px 11px; border-radius: 6px; z-index: 100; width: 260px; white-space: normal; line-height: 1.5; border: 1px solid #003366; }
+
+/* DEMO WATERMARK */
+.demo-strip { background: linear-gradient(90deg,var(--chblue),var(--chred)); color:white; text-align:center; font-size:11px; font-weight:800; letter-spacing:.15em; padding:5px; text-transform:uppercase; }
+
+/* FOOTER */
+footer { background: var(--navy); color: rgba(255,255,255,.5); padding: 24px 36px; font-size: 11px; line-height: 2; }
+footer a { color: var(--chblue); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+footer strong { color: var(--white); }
+
+.no-res { text-align: center; padding: 40px; color: var(--grey); font-style: italic; }
+@media print { .filter-btn,.search-box{display:none} .deal-table-wrap{max-height:none;overflow:visible} .dpanel{display:block!important} }
+</style>
+</head>
+<body>
+
+<div class="demo-strip">⚡ DEMO MODE — ALL DATA IS FICTIONAL — FOR ILLUSTRATION PURPOSES ONLY ⚡</div>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="logo">
+    <div class="logo-badge">
+      <span class="star">★</span> ITS DEMO TIME <span class="star">★</span>
+    </div>
+  </div>
+  <div class="hdr-meta">
+    <div class="title">Out-Quarter Pipeline Analysis — DEMO</div>
+    <div class="sub">Demo Corp &nbsp;|&nbsp; Q2–Q4 FY27 &nbsp;|&nbsp; March 30, 2026 &nbsp;|&nbsp; FY27: Feb 1, 2026 – Jan 31, 2027</div>
+  </div>
+</header>
+<div class="accent-bar"></div>
+
+<div class="wrap">
+
+<!-- EXECUTIVE ALERT -->
+<div class="alert">
+  <strong>⚠️ Critical Pipeline Gaps Across All Three Out-Quarters:</strong>
+  Combined Q2–Q4 pipeline totals <strong>$50.6M</strong> against a plan of <strong>$28.5M</strong> —
+  but after scrubbing <strong>$11.0M</strong> in vanity pipeline, realistic forecast lands at only
+  <strong>$16.6M</strong> (58.09421052631579% of plan).
+  High slip risk accounts for <strong>$11.4M</strong> in additional exposure.
+  Q1 Best Case spill creates potential Q2 upside of <strong>$1.26M</strong> — but cannot mask structural Q3/Q4 shortfalls.
+</div>
+
+<!-- Q1 SLIP BANNER -->
+<div class="slip-banner">
+  <strong>⚡ Q1 Spill Watch:</strong> $1.3M in Q1 Best Case deals face high slip risk into Q2 — 
+  Lakefront Analytics ($450K, Stage 3, 31 days), Navy Pier Ventures ($280K, Stage 3, 22 days),
+  Wrigleyville Works ($180K, Stage 2, 31 days), Lincoln Park Labs ($95K, Stage 1, 1 day — very likely slips),
+  South Loop Systems ($255K, Stage 3, 28 days). If these slip, they provide Q2 upside but mask Q3/Q4 gaps.
+</div>
+
+<!-- KPI CARDS -->
+<div class="sec">
+  <div class="kpi-row">
+    <div class="kpi navy">
+      <div class="kpi-lbl">Total Q2–Q4 Pipeline</div>
+      <div class="kpi-val">$50.6M</div>
+      <div class="kpi-sub">148 deals across 3 quarters</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-lbl">Vanity Pipeline</div>
+      <div class="kpi-val danger">$11.0M</div>
+      <div class="kpi-sub">22% of total — Stage 1–2 + 90d+ old</div>
+      <span class="badge b-red">Excluded from forecast</span>
+    </div>
+    <div class="kpi blue">
+      <div class="kpi-lbl">Qualified Pipeline</div>
+      <div class="kpi-val">$39.7M</div>
+      <div class="kpi-sub">After vanity scrub</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-lbl">High Slip Risk $</div>
+      <div class="kpi-val danger">$11.4M</div>
+      <div class="kpi-sub">Score ≥5 — at risk of not closing on time</div>
+      <span class="badge b-red">Additional exposure</span>
+    </div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi green">
+      <div class="kpi-lbl">Realistic Forecast (All)</div>
+      <div class="kpi-val warning">$16.6M</div>
+      <div class="kpi-sub">Commit×100% + BC×50% + Pipe×15%</div>
+    </div>
+    <div class="kpi blue">
+      <div class="kpi-lbl">Total Commit</div>
+      <div class="kpi-val">$3.2M</div>
+      <div class="kpi-sub">Across Q2–Q4</div>
+      <span class="badge b-blue">Locked</span>
+    </div>
+    <div class="kpi purple">
+      <div class="kpi-lbl">Q1 Spill Opportunity</div>
+      <div class="kpi-val" style="color:var(--purple)">$1.26M</div>
+      <div class="kpi-sub">5 Best Case deals at slip risk into Q2</div>
+      <span class="badge b-purple">Potential upside</span>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-lbl">Total Gap to Plan</div>
+      <div class="kpi-val danger">$11.9M</div>
+      <div class="kpi-sub">Q2 + Q3 + Q4 combined forecast shortfall</div>
+      <span class="badge b-red">Requires action</span>
+    </div>
+  </div>
+</div>
+
+<!-- MATH WATERFALL -->
+<div class="sec">
+  <div class="sec-title">Pipeline Math — Q2 / Q3 / Q4 Step-by-Step</div>
+  <div class="math-grid">
+    
+    <div class="math-card">
+      <div class="math-hdr q2-hdr">
+        <span>Q2 FY27 &nbsp;·&nbsp; May–Jul 2026</span>
+        <span class="coverage-chip cov-warn">1.7x raw cov</span>
+      </div>
+      <div class="math-body">
+        <div class="math-section-lbl">Pipeline Inventory</div>
+        <div class="math-row total-row"><span class="ml">Target</span><span class="mr">$5,500,000</span></div>
+        <div class="math-row"><span class="ml">Total Pipeline</span><span class="mr">$9,470,000</span></div>
+        <div class="math-row"><span class="ml">Raw Coverage</span><span class="mr"><span class="coverage-chip cov-warn">1.7x</span></span></div>
+        <div class="math-section-lbl">Vanity Scrub — Stage 1–2 + 90d+ old</div>
+        <div class="math-row minus"><span class="ml">− Vanity Pipeline</span><span class="mr">−$2,095,000</span></div>
+        <div class="math-row total-row"><span class="ml">Qualified Pipeline</span><span class="mr">$7,375,000</span></div>
+        <div class="math-row"><span class="ml">Qualified Coverage</span><span class="mr"><span class="coverage-chip cov-danger">1.3x</span></span></div>
+        <div class="math-section-lbl">Realistic Forecast — Commit×100% + BC×50% + Pipe×15%</div>
+        <div class="math-row"><span class="ml">Commit (×100%)</span><span class="mr">$1,863,000</span></div>
+        <div class="math-row"><span class="ml">Best Case (×50%)</span><span class="mr">$2,213,500</span></div>
+        <div class="math-row"><span class="ml">Pipeline (×15%)</span><span class="mr">$162,750</span></div>
+        <div class="math-row total-row"><span class="ml">Realistic Forecast</span><span class="mr">$4,239,250</span></div>
+        <div class="math-section-lbl">Gap Analysis</div>
+        <div class="math-row result-bad"><span class="ml">Gap to Plan</span><span class="mr">−$1,260,750</span></div>
+      </div>
+    </div>
+    
+    <div class="math-card">
+      <div class="math-hdr q3-hdr">
+        <span>Q3 FY27 &nbsp;·&nbsp; Aug–Oct 2026</span>
+        <span class="coverage-chip cov-warn">1.7x raw cov</span>
+      </div>
+      <div class="math-body">
+        <div class="math-section-lbl">Pipeline Inventory</div>
+        <div class="math-row total-row"><span class="ml">Target</span><span class="mr">$9,000,000</span></div>
+        <div class="math-row"><span class="ml">Total Pipeline</span><span class="mr">$15,041,000</span></div>
+        <div class="math-row"><span class="ml">Raw Coverage</span><span class="mr"><span class="coverage-chip cov-warn">1.7x</span></span></div>
+        <div class="math-section-lbl">Vanity Scrub — Stage 1–2 + 90d+ old</div>
+        <div class="math-row minus"><span class="ml">− Vanity Pipeline</span><span class="mr">−$3,250,000</span></div>
+        <div class="math-row total-row"><span class="ml">Qualified Pipeline</span><span class="mr">$11,791,000</span></div>
+        <div class="math-row"><span class="ml">Qualified Coverage</span><span class="mr"><span class="coverage-chip cov-danger">1.3x</span></span></div>
+        <div class="math-section-lbl">Realistic Forecast — Commit×100% + BC×50% + Pipe×15%</div>
+        <div class="math-row"><span class="ml">Commit (×100%)</span><span class="mr">$500,000</span></div>
+        <div class="math-row"><span class="ml">Best Case (×50%)</span><span class="mr">$3,611,000</span></div>
+        <div class="math-row"><span class="ml">Pipeline (×15%)</span><span class="mr">$610,350</span></div>
+        <div class="math-row total-row"><span class="ml">Realistic Forecast</span><span class="mr">$4,721,350</span></div>
+        <div class="math-section-lbl">Gap Analysis</div>
+        <div class="math-row result-bad"><span class="ml">Gap to Plan</span><span class="mr">−$4,278,650</span></div>
+      </div>
+    </div>
+    
+    <div class="math-card">
+      <div class="math-hdr q4-hdr">
+        <span>Q4 FY27 &nbsp;·&nbsp; Nov 2026–Jan 2027</span>
+        <span class="coverage-chip cov-warn">1.9x raw cov</span>
+      </div>
+      <div class="math-body">
+        <div class="math-section-lbl">Pipeline Inventory</div>
+        <div class="math-row total-row"><span class="ml">Target</span><span class="mr">$14,000,000</span></div>
+        <div class="math-row"><span class="ml">Total Pipeline</span><span class="mr">$26,129,000</span></div>
+        <div class="math-row"><span class="ml">Raw Coverage</span><span class="mr"><span class="coverage-chip cov-warn">1.9x</span></span></div>
+        <div class="math-section-lbl">Vanity Scrub — Stage 1–2 + 90d+ old</div>
+        <div class="math-row minus"><span class="ml">− Vanity Pipeline</span><span class="mr">−$5,644,000</span></div>
+        <div class="math-row total-row"><span class="ml">Qualified Pipeline</span><span class="mr">$20,485,000</span></div>
+        <div class="math-row"><span class="ml">Qualified Coverage</span><span class="mr"><span class="coverage-chip cov-danger">1.5x</span></span></div>
+        <div class="math-section-lbl">Realistic Forecast — Commit×100% + BC×50% + Pipe×15%</div>
+        <div class="math-row"><span class="ml">Commit (×100%)</span><span class="mr">$850,000</span></div>
+        <div class="math-row"><span class="ml">Best Case (×50%)</span><span class="mr">$5,430,000</span></div>
+        <div class="math-row"><span class="ml">Pipeline (×15%)</span><span class="mr">$1,316,250</span></div>
+        <div class="math-row total-row"><span class="ml">Realistic Forecast</span><span class="mr">$7,596,250</span></div>
+        <div class="math-section-lbl">Gap Analysis</div>
+        <div class="math-row result-bad"><span class="ml">Gap to Plan</span><span class="mr">−$6,403,750</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Q1 SLIP DETAILS -->
+<div class="sec">
+  <div class="sec-title">⚡ Q1 Best Case — Slip Risk into Q2 (31 Days Remaining in Q1)</div>
+  <div class="q1-slip-grid">
+    <div class="slip-card">
+      <div class="slip-card-title">Best Case Deals at Risk of Not Closing Q1</div>
+      <table class="slip-mini-table">
+        <thead><tr><th>Account</th><th>ACV</th><th>Stage</th><th>Owner</th><th>Days Left</th><th>Assessment</th></tr></thead>
+        <tbody>
+          <tr><td>Lakefront Analytics</td><td style="font-weight:700">$450,000</td><td>3 - Validation</td><td>Barack Obama</td><td>31</td><td style="color:var(--amber);font-weight:600">Possible slip → Q2</td></tr>
+          <tr><td>Navy Pier Ventures</td><td style="font-weight:700">$280,000</td><td>3 - Validation</td><td>Kanye West</td><td>22</td><td style="color:var(--amber);font-weight:600">Possible slip → Q2</td></tr>
+          <tr><td>South Loop Systems</td><td style="font-weight:700">$255,000</td><td>3 - Validation</td><td>Lupe Fiasco</td><td>28</td><td style="color:var(--amber);font-weight:600">Possible slip → Q2</td></tr>
+          <tr><td>Wrigleyville Works</td><td style="font-weight:700">$180,000</td><td>2 - Scoping</td><td>Common</td><td>31</td><td style="color:var(--amber);font-weight:600">Possible slip → Q2</td></tr>
+          <tr><td>Lincoln Park Labs</td><td style="font-weight:700">$95,000</td><td>1 - Discovery</td><td>Chance the Rapper</td><td>1</td><td style="color:var(--chred);font-weight:700">Very likely slips</td></tr>
+        </tbody>
+      </table>
+      <div class="slip-total">Total Q1 Best Case at risk: <strong>$1,260,000</strong> &nbsp;|&nbsp; All Stage 1–3 with 31 days or fewer remaining</div>
+    </div>
+    <div class="slip-card">
+      <div class="slip-card-title">Q1 Commit — What's Locked In (Strong)</div>
+      <table class="slip-mini-table">
+        <thead><tr><th>Account</th><th>ACV</th><th>Stage</th><th>Owner</th><th>Health</th></tr></thead>
+        <tbody>
+          <tr><td>Gold Coast Group</td><td style="font-weight:700">$580,000</td><td>5 - Negotiation</td><td>Oprah Winfrey</td><td style="color:var(--green)">● Green</td></tr>
+          <tr><td>Evanston Edge</td><td style="font-weight:700">$320,000</td><td>5 - Negotiation</td><td>Barack Obama</td><td style="color:var(--green)">● Green</td></tr>
+          <tr><td>Wheaton Works</td><td style="font-weight:700">$210,000</td><td>4 - Proposal</td><td>Common</td><td style="color:var(--green)">● Green</td></tr>
+          <tr><td>Blue Island Bridge</td><td style="font-weight:700">$155,000</td><td>4 - Proposal</td><td>Chance the Rapper</td><td style="color:var(--green)">● Green</td></tr>
+          <tr><td>Arlington Heights AI</td><td style="font-weight:700">$120,000</td><td>5 - Negotiation</td><td>Kanye West</td><td style="color:var(--green)">● Green</td></tr>
+        </tbody>
+      </table>
+      <div class="slip-total">Total Q1 Commit: <strong>$1,385,000</strong> &nbsp;|&nbsp; Solid — Stage 4–5 with Green health across the board</div>
+    </div>
+  </div>
+</div>
+
+<!-- DEAL EXPLORER -->
+<div class="sec">
+  <div class="sec-title">Interactive Deal Explorer — Q2–Q4 FY27 &nbsp;|&nbsp; Click any row to see why it's flagged</div>
+  <div class="explorer">
+    <div class="explorer-toolbar">
+      <span class="tb-label">Quarter:</span>
+      <div class="filter-group">
+        <button class="filter-btn active" data-f="quarter" data-v="ALL"       onclick="setF('quarter','ALL',this)">All</button>
+        <button class="filter-btn q2a"    data-f="quarter" data-v="Q2"        onclick="setF('quarter','Q2',this)">Q2</button>
+        <button class="filter-btn q3a"    data-f="quarter" data-v="Q3"        onclick="setF('quarter','Q3',this)">Q3</button>
+        <button class="filter-btn q4a"    data-f="quarter" data-v="Q4"        onclick="setF('quarter','Q4',this)">Q4</button>
+      </div>
+      <span class="tb-label" style="margin-left:8px">Flag:</span>
+      <div class="filter-group">
+        <button class="filter-btn fvanity" data-f="flag" data-v="VANITY"    onclick="setF('flag','VANITY',this)">🟡 Vanity Only</button>
+        <button class="filter-btn fslip"   data-f="flag" data-v="HIGH_SLIP" onclick="setF('flag','HIGH_SLIP',this)">🔴 High Slip Only</button>
+        <button class="filter-btn"         data-f="flag" data-v="CLEAR"     onclick="setF('flag','CLEAR',this)">Clear Filter</button>
+      </div>
+      <input type="text" class="search-box" id="srch" placeholder="Search account or owner…" oninput="renderT()">
+      <span class="deals-count" id="dcnt">148 deals shown</span>
+    </div>
+    <div class="deal-table-wrap">
+      <table class="dtbl">
+        <thead>
+          <tr>
+            <th style="width:20px"></th>
+            <th onclick="srt('account')">Account ↕</th>
+            <th onclick="srt('quarter')">Qtr ↕</th>
+            <th onclick="srt('acv')">ACV ↕</th>
+            <th>Stage</th>
+            <th onclick="srt('owner')">Owner ↕</th>
+            <th>Forecast</th>
+            <th>Health</th>
+            <th>Vanity? <span class="tip">?<span class="tt">Vanity = created 90+ days ago AND stuck in Stage 1 or 2. Click row to see why.</span></span></th>
+            <th>Slip Risk <span class="tip">?<span class="tt">Scored: stage (1–2=+3, 3=+1), missing next steps (+2), days to close &lt;60 (+2), Red/Black health (+2), Pipeline category (+1). ≥5=High.</span></span></th>
+            <th onclick="srt('days_since_created')">Days Old ↕</th>
+            <th>Close Date</th>
+          </tr>
+        </thead>
+        <tbody id="dtbody"></tbody>
+      </table>
+      <div id="nores" class="no-res" style="display:none">No deals match your current filters.</div>
+    </div>
+  </div>
+</div>
+
+<!-- REP QUALITY -->
+<div class="sec">
+  <div class="sec-title">Rep Pipeline Quality</div>
+  <div style="background:var(--white);border-radius:8px;border:1px solid #DDEEFF;overflow:hidden">
+    <table class="dtbl">
+      <thead>
+        <tr><th>Owner</th><th># Deals</th><th>Total Pipeline</th><th>Vanity ($)</th><th>Vanity %</th><th>Qualified</th><th>Commit</th><th>Best Case</th><th>Pipeline Mix</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Kanye West</strong></td><td>19</td><td>$6,619,000</td><td>$1,682,000</td><td style="color:var(--green)">25%</td><td>$4,937,000</td><td>$100,000</td><td>$2,462,000</td><td><div class="rep-bar"><div class="rb-qual" style="width:75%"></div><div class="rb-van" style="width:25%"></div></div></td><td><span class="rbadge rb-low">✅ Healthy</span></td></tr>
+<tr><td><strong>Jennifer Hudson</strong></td><td>19</td><td>$7,307,000</td><td>$255,000</td><td style="color:var(--green)">3%</td><td>$7,052,000</td><td>$0</td><td>$2,992,000</td><td><div class="rep-bar"><div class="rb-qual" style="width:97%"></div><div class="rb-van" style="width:3%"></div></div></td><td><span class="rbadge rb-low">✅ Healthy</span></td></tr>
+<tr><td><strong>Common</strong></td><td>18</td><td>$6,052,000</td><td>$1,138,000</td><td style="color:var(--green)">19%</td><td>$4,914,000</td><td>$68,000</td><td>$4,645,000</td><td><div class="rep-bar"><div class="rb-qual" style="width:81%"></div><div class="rb-van" style="width:19%"></div></div></td><td><span class="rbadge rb-low">✅ Healthy</span></td></tr>
+<tr><td><strong>Chance the Rapper</strong></td><td>18</td><td>$5,503,000</td><td>$1,610,000</td><td style="color:var(--green)">29%</td><td>$3,893,000</td><td>$45,000</td><td>$1,695,000</td><td><div class="rep-bar"><div class="rb-qual" style="width:71%"></div><div class="rb-van" style="width:29%"></div></div></td><td><span class="rbadge rb-low">✅ Healthy</span></td></tr>
+<tr style="background:#FFF5F5"><td><strong>Lupe Fiasco</strong></td><td>18</td><td>$5,120,000</td><td>$3,118,000</td><td style="color:var(--chred)">61%</td><td>$2,002,000</td><td>$0</td><td>$2,002,000</td><td><div class="rep-bar"><div class="rb-qual" style="width:39%"></div><div class="rb-van" style="width:61%"></div></div></td><td><span class="rbadge rb-high">High Vanity</span></td></tr>
+<tr><td><strong>Barack Obama</strong></td><td>19</td><td>$7,131,000</td><td>$490,000</td><td style="color:var(--green)">7%</td><td>$6,641,000</td><td>$1,870,000</td><td>$2,726,000</td><td><div class="rep-bar"><div class="rb-qual" style="width:93%"></div><div class="rb-van" style="width:7%"></div></div></td><td><span class="rbadge rb-low">✅ Healthy</span></td></tr>
+<tr><td><strong>Oprah Winfrey</strong></td><td>19</td><td>$8,118,000</td><td>$2,113,000</td><td style="color:var(--green)">26%</td><td>$6,005,000</td><td>$1,130,000</td><td>$3,040,000</td><td><div class="rep-bar"><div class="rb-qual" style="width:74%"></div><div class="rb-van" style="width:26%"></div></div></td><td><span class="rbadge rb-low">✅ Healthy</span></td></tr>
+<tr><td><strong>Derrick Rose</strong></td><td>18</td><td>$4,790,000</td><td>$583,000</td><td style="color:var(--green)">12%</td><td>$4,207,000</td><td>$0</td><td>$2,947,000</td><td><div class="rep-bar"><div class="rb-qual" style="width:88%"></div><div class="rb-van" style="width:12%"></div></div></td><td><span class="rbadge rb-low">✅ Healthy</span></td></tr>
+
+      </tbody>
+    </table>
+    <div style="padding:8px 14px;font-size:11px;color:var(--grey);border-top:1px solid #F3F4F6;background:#FAFBFF;display:flex;gap:20px">
+      <span><span style="display:inline-block;width:12px;height:8px;background:var(--chblue);border-radius:2px;margin-right:4px;vertical-align:middle"></span>Qualified</span>
+      <span><span style="display:inline-block;width:12px;height:8px;background:var(--chred);border-radius:2px;margin-right:4px;vertical-align:middle"></span>Vanity</span>
+      <span style="color:var(--chred)">🔴 Phantom = 90%+ vanity — immediate pipeline review required</span>
+    </div>
+  </div>
+</div>
+
+<!-- RECOMMENDATIONS -->
+<div class="sec">
+  <div class="sec-title">Recommendations</div>
+  <div class="rec-grid">
+    <div class="rec-card">
+      <div class="rec-hdr">🗑️ Pipeline Hygiene — This Week</div>
+      <ul class="rec-list">
+        <li>Force Closed/Lost on all deals 500+ days old with no next steps — Elgin Engage (500d), Chicago Heights Hub (600d), Zion Zone (500d), Vernon Hills Ventures (600d), Glenwood Growth (510d) — combined $1.7M in phantom pipeline</li>
+        <li>Mandatory rep review: any deal Stage 1–2, 90+ days old, no next steps — must have an update or be closed within 5 business days</li>
+        <li>Triage Northbrook Net, Waukegan Works, Alsip Analytics — all 250–320 days old, Stage 1–2, no next steps, $1.5M+ combined exposure</li>
+        <li>Remove from forecast any deal with Black health + Stage 1 — these inflate coverage and create false confidence</li>
+      </ul>
+    </div>
+    <div class="rec-card">
+      <div class="rec-hdr">📊 Forecast Actions — This Week</div>
+      <ul class="rec-list">
+        <li>Q2 commit stands at $1,863,000 — healthy, but require formal commit submissions for all Q2 Stage 4–5 reps within 5 business days</li>
+        <li>Q3 and Q4 commit is minimal — enforce a standard: no deal enters Best Case without a documented commit path, exec sponsor, and close timeline</li>
+        <li>Realistic Q2 forecast of $4.2M is 77% of target — achievable but needs hygiene before presenting to leadership</li>
+        <li>Track Q1 Best Case weekly — $1.26M at risk of slipping; if it does, redirect energy immediately to Q3 gap</li>
+      </ul>
+    </div>
+    <div class="rec-card">
+      <div class="rec-hdr">🚀 Pipeline Generation — Now</div>
+      <ul class="rec-list">
+        <li>Q4 gap of $6.4M is structural — this cannot be closed with existing pipeline. Escalate to CRO: either adjust target or materially increase sourcing capacity in Q2</li>
+        <li>Upsell pipeline is underdeveloped across Q3/Q4 — CS must run formal expansion plays on all Green/Yellow accounts with 12+ months tenure</li>
+        <li>Geographic concentration: Chicago metro accounts dominate pipeline. Expand outreach to secondary markets — suburbs and satellite offices of enterprise logos — to diversify</li>
+        <li>Launch demand gen blitz targeting Q3/Q4 — need 3–4x pipeline coverage by June to hit realistic Q4 number. Set weekly sourcing targets by rep now</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<footer>
+  <strong>ITS DEMO TIME</strong> &nbsp;|&nbsp; Out-Quarter Pipeline Analysis &nbsp;|&nbsp; Demo Corp &nbsp;|&nbsp; March 30, 2026<br>
+  ⚠️ <em>All company names, deal values, and personnel in this report are entirely fictional and for demonstration purposes only.</em><br>
+  Chicago Flag Colors: Blue #00AEEF · Red #CC0000 &nbsp;|&nbsp; Data as of March 30, 2026
+</footer>
+
+<script>
+const DEALS = [{"id": 0, "account": "Lakefront Analytics", "quarter": "Q2", "acv": 1200000, "stage": "5 - Negotiation", "stage_n": 5, "owner": "Barack Obama", "forecast": "Commit", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 45, "days_to_close": 112, "close_date": "Jul 21, 2026", "next_steps": "Contract review in flight; legal redlines due Friday", "vanity_reasons": [], "slip_reasons": []}, {"id": 1, "account": "WindyCity Data Systems", "quarter": "Q2", "acv": 850000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Oprah Winfrey", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 60, "days_to_close": 66, "close_date": "Jun 05, 2026", "next_steps": "Proposal delivered; exec review May 12", "vanity_reasons": [], "slip_reasons": []}, {"id": 2, "account": "Magnificent Mile Media", "quarter": "Q2", "acv": 620000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Jennifer Hudson", "forecast": "Best Case", "health": "Yellow", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 2, "days_since_created": 75, "days_to_close": 48, "close_date": "May 18, 2026", "next_steps": "Procurement review ongoing; pushing for May close", "vanity_reasons": [], "slip_reasons": ["Only 48 days to close \u2014 too short for current stage"]}, {"id": 3, "account": "Navy Pier Ventures", "quarter": "Q2", "acv": 500000, "stage": "3 - Validation", "stage_n": 3, "owner": "Kanye West", "forecast": "Best Case", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 1, "days_since_created": 80, "days_to_close": 100, "close_date": "Jul 09, 2026", "next_steps": "Technical validation complete; business case due", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete"]}, {"id": 4, "account": "Wrigleyville Works", "quarter": "Q2", "acv": 480000, "stage": "3 - Validation", "stage_n": 3, "owner": "Common", "forecast": "Best Case", "health": "Yellow", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 1, "days_since_created": 90, "days_to_close": 85, "close_date": "Jun 24, 2026", "next_steps": "Security review in progress", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete"]}, {"id": 5, "account": "Lincoln Park Labs", "quarter": "Q2", "acv": 390000, "stage": "3 - Validation", "stage_n": 3, "owner": "Chance the Rapper", "forecast": "Pipeline", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "High", "slip_score": 6, "days_since_created": 120, "days_to_close": 42, "close_date": "May 12, 2026", "next_steps": "", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "No next steps documented", "Only 42 days to close \u2014 too short for current stage", "Forecast category is Pipeline (unqualified)"]}, {"id": 6, "account": "South Loop Systems", "quarter": "Q2", "acv": 350000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Lupe Fiasco", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 55, "days_to_close": 95, "close_date": "Jul 04, 2026", "next_steps": "Final pricing discussion scheduled Jun 1", "vanity_reasons": [], "slip_reasons": []}, {"id": 7, "account": "Pilsen Platform Co", "quarter": "Q2", "acv": 320000, "stage": "3 - Validation", "stage_n": 3, "owner": "Derrick Rose", "forecast": "Pipeline", "health": "Yellow", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 2, "days_since_created": 180, "days_to_close": 102, "close_date": "Jul 11, 2026", "next_steps": "Waiting on champion to schedule exec meeting", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "Forecast category is Pipeline (unqualified)"]}, {"id": 8, "account": "River North Revenue", "quarter": "Q2", "acv": 300000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Barack Obama", "forecast": "Pipeline", "health": "Green", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 110, "days_to_close": 114, "close_date": "Jul 23, 2026", "next_steps": "", "vanity_reasons": ["Created 110 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 9, "account": "Gold Coast Group", "quarter": "Q2", "acv": 280000, "stage": "5 - Negotiation", "stage_n": 5, "owner": "Oprah Winfrey", "forecast": "Commit", "health": "Green", "opp_type": "Renewal+Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 30, "days_to_close": 84, "close_date": "Jun 23, 2026", "next_steps": "SOW routing to signatures", "vanity_reasons": [], "slip_reasons": []}, {"id": 10, "account": "Wicker Park Works", "quarter": "Q2", "acv": 260000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Jennifer Hudson", "forecast": "Best Case", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 65, "days_to_close": 106, "close_date": "Jul 15, 2026", "next_steps": "Exec sponsor confirmed; presentation May 20", "vanity_reasons": [], "slip_reasons": []}, {"id": 11, "account": "Hyde Park Hub", "quarter": "Q2", "acv": 240000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Kanye West", "forecast": "Pipeline", "health": "Red", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 10, "days_since_created": 200, "days_to_close": 51, "close_date": "May 21, 2026", "next_steps": "", "vanity_reasons": ["Created 200 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Only 51 days to close \u2014 too short for current stage", "Account health is Red", "Forecast category is Pipeline (unqualified)"]}, {"id": 12, "account": "Logan Square Logic", "quarter": "Q2", "acv": 225000, "stage": "3 - Validation", "stage_n": 3, "owner": "Common", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 1, "days_since_created": 70, "days_to_close": 74, "close_date": "Jun 13, 2026", "next_steps": "Demo completed; followup May 8", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete"]}, {"id": 13, "account": "Old Town Operations", "quarter": "Q2", "acv": 210000, "stage": "1 - Discovery", "stage_n": 1, "owner": "Chance the Rapper", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 8, "days_since_created": 300, "days_to_close": 58, "close_date": "May 28, 2026", "next_steps": "", "vanity_reasons": ["Created 300 days ago \u2014 threshold is 90 days", "Stuck in 1 - Discovery \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 1 \u2014 early stage, high execution risk", "No next steps documented", "Only 58 days to close \u2014 too short for current stage", "Forecast category is Pipeline (unqualified)"]}, {"id": 14, "account": "Greektown Metrics", "quarter": "Q2", "acv": 195000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Lupe Fiasco", "forecast": "Best Case", "health": "Yellow", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 2, "days_since_created": 50, "days_to_close": 42, "close_date": "May 12, 2026", "next_steps": "Pricing finalized; awaiting PO", "vanity_reasons": [], "slip_reasons": ["Only 42 days to close \u2014 too short for current stage"]}, {"id": 15, "account": "Chinatown Cloud", "quarter": "Q2", "acv": 185000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Derrick Rose", "forecast": "Pipeline", "health": "Yellow", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 95, "days_to_close": 76, "close_date": "Jun 15, 2026", "next_steps": "", "vanity_reasons": ["Created 95 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 16, "account": "Evanston Edge", "quarter": "Q2", "acv": 170000, "stage": "5 - Negotiation", "stage_n": 5, "owner": "Barack Obama", "forecast": "Commit", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 40, "days_to_close": 64, "close_date": "Jun 03, 2026", "next_steps": "Verbal commit; contract drafted", "vanity_reasons": [], "slip_reasons": []}, {"id": 17, "account": "Oak Park Ops", "quarter": "Q2", "acv": 160000, "stage": "3 - Validation", "stage_n": 3, "owner": "Oprah Winfrey", "forecast": "Pipeline", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 2, "days_since_created": 130, "days_to_close": 99, "close_date": "Jul 08, 2026", "next_steps": "Champion meeting Jun 3", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "Forecast category is Pipeline (unqualified)"]}, {"id": 18, "account": "Naperville Networks", "quarter": "Q2", "acv": 150000, "stage": "1 - Discovery", "stage_n": 1, "owner": "Jennifer Hudson", "forecast": "Pipeline", "health": "Black", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 10, "days_since_created": 450, "days_to_close": 41, "close_date": "May 11, 2026", "next_steps": "", "vanity_reasons": ["Created 450 days ago \u2014 threshold is 90 days", "Stuck in 1 - Discovery \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 1 \u2014 early stage, high execution risk", "No next steps documented", "Only 41 days to close \u2014 too short for current stage", "Account health is Black", "Forecast category is Pipeline (unqualified)"]}, {"id": 19, "account": "Schaumburg Scale", "quarter": "Q2", "acv": 145000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Kanye West", "forecast": "Pipeline", "health": "\u2014", "opp_type": "Upsell", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 120, "days_to_close": 111, "close_date": "Jul 20, 2026", "next_steps": "", "vanity_reasons": ["Created 120 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 20, "account": "Rosemont Revenue", "quarter": "Q2", "acv": 140000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Common", "forecast": "Best Case", "health": "Green", "opp_type": "Renewal+Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 55, "days_to_close": 104, "close_date": "Jul 13, 2026", "next_steps": "PO expected this week", "vanity_reasons": [], "slip_reasons": []}, {"id": 21, "account": "Aurora Access Corp", "quarter": "Q2", "acv": 135000, "stage": "3 - Validation", "stage_n": 3, "owner": "Chance the Rapper", "forecast": "Best Case", "health": "Yellow", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Medium", "slip_score": 3, "days_since_created": 85, "days_to_close": 39, "close_date": "May 09, 2026", "next_steps": "Technical review complete; procurement pending", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "Only 39 days to close \u2014 too short for current stage"]}, {"id": 22, "account": "Cicero Systems", "quarter": "Q2", "acv": 125000, "stage": "1 - Discovery", "stage_n": 1, "owner": "Lupe Fiasco", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 380, "days_to_close": 60, "close_date": "May 30, 2026", "next_steps": "", "vanity_reasons": ["Created 380 days ago \u2014 threshold is 90 days", "Stuck in 1 - Discovery \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 1 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 23, "account": "Berwyn Bridge Inc", "quarter": "Q2", "acv": 120000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Derrick Rose", "forecast": "Pipeline", "health": "Yellow", "opp_type": "Upsell", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 150, "days_to_close": 60, "close_date": "May 30, 2026", "next_steps": "", "vanity_reasons": ["Created 150 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 24, "account": "Morton Grove Media", "quarter": "Q2", "acv": 115000, "stage": "3 - Validation", "stage_n": 3, "owner": "Barack Obama", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 1, "days_since_created": 60, "days_to_close": 66, "close_date": "Jun 05, 2026", "next_steps": "Pilot results positive; close expected Jun 15", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete"]}, {"id": 25, "account": "Skokie Solutions", "quarter": "Q2", "acv": 110000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Oprah Winfrey", "forecast": "Best Case", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 45, "days_to_close": 77, "close_date": "Jun 16, 2026", "next_steps": "Budget confirmed; PO in process", "vanity_reasons": [], "slip_reasons": []}, {"id": 26, "account": "Des Plaines Data", "quarter": "Q2", "acv": 105000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Jennifer Hudson", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 210, "days_to_close": 76, "close_date": "Jun 15, 2026", "next_steps": "", "vanity_reasons": ["Created 210 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 27, "account": "Arlington Heights AI", "quarter": "Q2", "acv": 100000, "stage": "5 - Negotiation", "stage_n": 5, "owner": "Kanye West", "forecast": "Commit", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 35, "days_to_close": 65, "close_date": "Jun 04, 2026", "next_steps": "Signed; awaiting countersignature", "vanity_reasons": [], "slip_reasons": []}, {"id": 28, "account": "Palatine Platform", "quarter": "Q2", "acv": 95000, "stage": "3 - Validation", "stage_n": 3, "owner": "Common", "forecast": "Pipeline", "health": "Yellow", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Medium", "slip_score": 4, "days_since_created": 140, "days_to_close": 113, "close_date": "Jul 22, 2026", "next_steps": "", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 29, "account": "Rolling Meadows Revenue", "quarter": "Q2", "acv": 90000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Chance the Rapper", "forecast": "Pipeline", "health": "Red", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 8, "days_since_created": 190, "days_to_close": 112, "close_date": "Jul 21, 2026", "next_steps": "", "vanity_reasons": ["Created 190 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Account health is Red", "Forecast category is Pipeline (unqualified)"]}, {"id": 30, "account": "Hoffman Estates Hub", "quarter": "Q2", "acv": 85000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Lupe Fiasco", "forecast": "Best Case", "health": "Green", "opp_type": "Renewal+Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 48, "days_to_close": 62, "close_date": "Jun 01, 2026", "next_steps": "Legal markup received; responding this week", "vanity_reasons": [], "slip_reasons": []}, {"id": 31, "account": "Elgin Engage", "quarter": "Q2", "acv": 80000, "stage": "1 - Discovery", "stage_n": 1, "owner": "Derrick Rose", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 500, "days_to_close": 79, "close_date": "Jun 18, 2026", "next_steps": "", "vanity_reasons": ["Created 500 days ago \u2014 threshold is 90 days", "Stuck in 1 - Discovery \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 1 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 32, "account": "Bloomingdale Brands", "quarter": "Q2", "acv": 78000, "stage": "3 - Validation", "stage_n": 3, "owner": "Barack Obama", "forecast": "Best Case", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 1, "days_since_created": 72, "days_to_close": 119, "close_date": "Jul 28, 2026", "next_steps": "Business case approved; Jun close expected", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete"]}, {"id": 33, "account": "Downers Grove Data", "quarter": "Q2", "acv": 75000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Oprah Winfrey", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 160, "days_to_close": 118, "close_date": "Jul 27, 2026", "next_steps": "", "vanity_reasons": ["Created 160 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 34, "account": "Lombard Labs", "quarter": "Q2", "acv": 72000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Jennifer Hudson", "forecast": "Best Case", "health": "Yellow", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 55, "days_to_close": 60, "close_date": "May 30, 2026", "next_steps": "Awaiting IT security sign-off", "vanity_reasons": [], "slip_reasons": []}, {"id": 35, "account": "Carol Stream Cloud", "quarter": "Q2", "acv": 70000, "stage": "3 - Validation", "stage_n": 3, "owner": "Kanye West", "forecast": "Pipeline", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Medium", "slip_score": 4, "days_since_created": 100, "days_to_close": 82, "close_date": "Jun 21, 2026", "next_steps": "", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 36, "account": "Wheaton Works", "quarter": "Q2", "acv": 68000, "stage": "5 - Negotiation", "stage_n": 5, "owner": "Common", "forecast": "Commit", "health": "Green", "opp_type": "Renewal+Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 2, "days_since_created": 25, "days_to_close": 58, "close_date": "May 28, 2026", "next_steps": "Final sign pending CFO approval", "vanity_reasons": [], "slip_reasons": ["Only 58 days to close \u2014 too short for current stage"]}, {"id": 37, "account": "Glen Ellyn Group", "quarter": "Q2", "acv": 65000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Chance the Rapper", "forecast": "Pipeline", "health": "Yellow", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 175, "days_to_close": 71, "close_date": "Jun 10, 2026", "next_steps": "", "vanity_reasons": ["Created 175 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 38, "account": "Lisle Labs", "quarter": "Q2", "acv": 62000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Lupe Fiasco", "forecast": "Best Case", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 50, "days_to_close": 94, "close_date": "Jul 03, 2026", "next_steps": "Pricing locked; PO routing", "vanity_reasons": [], "slip_reasons": []}, {"id": 39, "account": "Woodridge Works", "quarter": "Q2", "acv": 60000, "stage": "1 - Discovery", "stage_n": 1, "owner": "Derrick Rose", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 420, "days_to_close": 89, "close_date": "Jun 28, 2026", "next_steps": "", "vanity_reasons": ["Created 420 days ago \u2014 threshold is 90 days", "Stuck in 1 - Discovery \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 1 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 40, "account": "Bolingbrook Bridge", "quarter": "Q2", "acv": 58000, "stage": "3 - Validation", "stage_n": 3, "owner": "Barack Obama", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Medium", "slip_score": 3, "days_since_created": 65, "days_to_close": 48, "close_date": "May 18, 2026", "next_steps": "Trial extended; decision by Jun 20", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "Only 48 days to close \u2014 too short for current stage"]}, {"id": 41, "account": "Orland Park Ops", "quarter": "Q2", "acv": 55000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Oprah Winfrey", "forecast": "Pipeline", "health": "Red", "opp_type": "Upsell", "is_vanity": true, "slip_risk": "High", "slip_score": 8, "days_since_created": 220, "days_to_close": 99, "close_date": "Jul 08, 2026", "next_steps": "", "vanity_reasons": ["Created 220 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Account health is Red", "Forecast category is Pipeline (unqualified)"]}, {"id": 42, "account": "Tinley Park Tech", "quarter": "Q2", "acv": 52000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Jennifer Hudson", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 55, "days_to_close": 85, "close_date": "Jun 24, 2026", "next_steps": "Final executive presentation scheduled", "vanity_reasons": [], "slip_reasons": []}, {"id": 43, "account": "Calumet City Cloud", "quarter": "Q2", "acv": 50000, "stage": "3 - Validation", "stage_n": 3, "owner": "Kanye West", "forecast": "Pipeline", "health": "Yellow", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Medium", "slip_score": 4, "days_since_created": 110, "days_to_close": 77, "close_date": "Jun 16, 2026", "next_steps": "", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 44, "account": "Harvey Hub", "quarter": "Q2", "acv": 48000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Common", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 280, "days_to_close": 96, "close_date": "Jul 05, 2026", "next_steps": "", "vanity_reasons": ["Created 280 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 45, "account": "Blue Island Bridge", "quarter": "Q2", "acv": 45000, "stage": "5 - Negotiation", "stage_n": 5, "owner": "Chance the Rapper", "forecast": "Commit", "health": "Green", "opp_type": "Renewal+Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 2, "days_since_created": 30, "days_to_close": 37, "close_date": "May 07, 2026", "next_steps": "Renewal terms agreed; paperwork in flight", "vanity_reasons": [], "slip_reasons": ["Only 37 days to close \u2014 too short for current stage"]}, {"id": 46, "account": "Chicago Heights Hub", "quarter": "Q2", "acv": 42000, "stage": "1 - Discovery", "stage_n": 1, "owner": "Lupe Fiasco", "forecast": "Pipeline", "health": "Black", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 8, "days_since_created": 600, "days_to_close": 111, "close_date": "Jul 20, 2026", "next_steps": "", "vanity_reasons": ["Created 600 days ago \u2014 threshold is 90 days", "Stuck in 1 - Discovery \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 1 \u2014 early stage, high execution risk", "No next steps documented", "Account health is Black", "Forecast category is Pipeline (unqualified)"]}, {"id": 47, "account": "Flossmoor Focus", "quarter": "Q2", "acv": 40000, "stage": "3 - Validation", "stage_n": 3, "owner": "Derrick Rose", "forecast": "Best Case", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 1, "days_since_created": 75, "days_to_close": 85, "close_date": "Jun 24, 2026", "next_steps": "Technical champion confirmed; advancing to procurement", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete"]}, {"id": 48, "account": "Homewood Hub", "quarter": "Q3", "acv": 1500000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Barack Obama", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 55, "days_to_close": 171, "close_date": "Sep 18, 2026", "next_steps": "RFP response submitted; oral presentations Aug 10", "vanity_reasons": [], "slip_reasons": []}, {"id": 49, "account": "Park Forest Platform", "quarter": "Q3", "acv": 1100000, "stage": "3 - Validation", "stage_n": 3, "owner": "Oprah Winfrey", "forecast": "Pipeline", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 2, "days_since_created": 90, "days_to_close": 190, "close_date": "Oct 07, 2026", "next_steps": "Champion engaged; exec sponsor meeting Aug 20", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "Forecast category is Pipeline (unqualified)"]}, {"id": 50, "account": "Richton Park Revenue", "quarter": "Q3", "acv": 950000, "stage": "3 - Validation", "stage_n": 3, "owner": "Jennifer Hudson", "forecast": "Pipeline", "health": "Yellow", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Medium", "slip_score": 4, "days_since_created": 120, "days_to_close": 124, "close_date": "Aug 02, 2026", "next_steps": "", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 51, "account": "Sauk Village Systems", "quarter": "Q3", "acv": 800000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Kanye West", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 60, "days_to_close": 210, "close_date": "Oct 27, 2026", "next_steps": "Proposal delivered; budget confirmed", "vanity_reasons": [], "slip_reasons": []}, {"id": 52, "account": "Lansing Labs", "quarter": "Q3", "acv": 720000, "stage": "3 - Validation", "stage_n": 3, "owner": "Common", "forecast": "Best Case", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 1, "days_since_created": 80, "days_to_close": 205, "close_date": "Oct 22, 2026", "next_steps": "Pilot extended; strong usage signal", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete"]}, {"id": 53, "account": "Glenwood Group", "quarter": "Q3", "acv": 650000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Chance the Rapper", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 200, "days_to_close": 160, "close_date": "Sep 07, 2026", "next_steps": "", "vanity_reasons": ["Created 200 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 54, "account": "Lynwood Logistics", "quarter": "Q3", "acv": 600000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Lupe Fiasco", "forecast": "Best Case", "health": "Yellow", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 70, "days_to_close": 181, "close_date": "Sep 28, 2026", "next_steps": "Final pricing review with CFO", "vanity_reasons": [], "slip_reasons": []}, {"id": 55, "account": "South Holland Hub", "quarter": "Q3", "acv": 550000, "stage": "3 - Validation", "stage_n": 3, "owner": "Derrick Rose", "forecast": "Pipeline", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Medium", "slip_score": 4, "days_since_created": 140, "days_to_close": 187, "close_date": "Oct 04, 2026", "next_steps": "", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 56, "account": "Thornton Tech", "quarter": "Q3", "acv": 500000, "stage": "5 - Negotiation", "stage_n": 5, "owner": "Barack Obama", "forecast": "Commit", "health": "Green", "opp_type": "Renewal+Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 30, "days_to_close": 136, "close_date": "Aug 14, 2026", "next_steps": "Contract executed; awaiting DocuSign", "vanity_reasons": [], "slip_reasons": []}, {"id": 57, "account": "Riverdale Revenue", "quarter": "Q3", "acv": 480000, "stage": "3 - Validation", "stage_n": 3, "owner": "Oprah Winfrey", "forecast": "Pipeline", "health": "Yellow", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Medium", "slip_score": 4, "days_since_created": 110, "days_to_close": 204, "close_date": "Oct 21, 2026", "next_steps": "", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 58, "account": "Blue Island Bio", "quarter": "Q3", "acv": 450000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Jennifer Hudson", "forecast": "Best Case", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 55, "days_to_close": 148, "close_date": "Aug 26, 2026", "next_steps": "Expansion discussion with 3 additional teams", "vanity_reasons": [], "slip_reasons": []}, {"id": 59, "account": "Alsip Analytics", "quarter": "Q3", "acv": 420000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Kanye West", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 310, "days_to_close": 143, "close_date": "Aug 21, 2026", "next_steps": "", "vanity_reasons": ["Created 310 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 60, "account": "Burbank Bridge", "quarter": "Q3", "acv": 400000, "stage": "3 - Validation", "stage_n": 3, "owner": "Common", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 1, "days_since_created": 85, "days_to_close": 123, "close_date": "Aug 01, 2026", "next_steps": "Legal review starting Sept 1", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete"]}, {"id": 61, "account": "Summit Systems", "quarter": "Q3", "acv": 380000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Chance the Rapper", "forecast": "Best Case", "health": "Yellow", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 65, "days_to_close": 185, "close_date": "Oct 02, 2026", "next_steps": "Pricing finalized; champion confirmed", "vanity_reasons": [], "slip_reasons": []}, {"id": 62, "account": "Bedford Park Bridge", "quarter": "Q3", "acv": 360000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Lupe Fiasco", "forecast": "Pipeline", "health": "Red", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 8, "days_since_created": 250, "days_to_close": 169, "close_date": "Sep 16, 2026", "next_steps": "", "vanity_reasons": ["Created 250 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Account health is Red", "Forecast category is Pipeline (unqualified)"]}, {"id": 63, "account": "Bridgeview Bio", "quarter": "Q3", "acv": 340000, "stage": "3 - Validation", "stage_n": 3, "owner": "Derrick Rose", "forecast": "Pipeline", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Medium", "slip_score": 4, "days_since_created": 130, "days_to_close": 130, "close_date": "Aug 08, 2026", "next_steps": "", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 64, "account": "Justice Jump", "quarter": "Q3", "acv": 320000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Barack Obama", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 60, "days_to_close": 133, "close_date": "Aug 11, 2026", "next_steps": "Finalist in 3-vendor eval; decision Sept 15", "vanity_reasons": [], "slip_reasons": []}, {"id": 65, "account": "Hodgkins Hub", "quarter": "Q3", "acv": 300000, "stage": "1 - Discovery", "stage_n": 1, "owner": "Oprah Winfrey", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 400, "days_to_close": 131, "close_date": "Aug 09, 2026", "next_steps": "", "vanity_reasons": ["Created 400 days ago \u2014 threshold is 90 days", "Stuck in 1 - Discovery \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 1 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 66, "account": "Lyons Labs", "quarter": "Q3", "acv": 280000, "stage": "3 - Validation", "stage_n": 3, "owner": "Jennifer Hudson", "forecast": "Best Case", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 1, "days_since_created": 75, "days_to_close": 139, "close_date": "Aug 17, 2026", "next_steps": "Technical validation complete", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete"]}, {"id": 67, "account": "Riverside Revenue", "quarter": "Q3", "acv": 265000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Kanye West", "forecast": "Pipeline", "health": "Yellow", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 170, "days_to_close": 193, "close_date": "Oct 10, 2026", "next_steps": "", "vanity_reasons": ["Created 170 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 68, "account": "North Riverside Net", "quarter": "Q3", "acv": 250000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Common", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 55, "days_to_close": 190, "close_date": "Oct 07, 2026", "next_steps": "PO expected week of Sept 7", "vanity_reasons": [], "slip_reasons": []}, {"id": 69, "account": "Brookfield Bridge", "quarter": "Q3", "acv": 238000, "stage": "3 - Validation", "stage_n": 3, "owner": "Chance the Rapper", "forecast": "Pipeline", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Medium", "slip_score": 4, "days_since_created": 100, "days_to_close": 150, "close_date": "Aug 28, 2026", "next_steps": "", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 70, "account": "La Grange Labs", "quarter": "Q3", "acv": 225000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Lupe Fiasco", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 220, "days_to_close": 148, "close_date": "Aug 26, 2026", "next_steps": "", "vanity_reasons": ["Created 220 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 71, "account": "Western Springs Works", "quarter": "Q3", "acv": 212000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Derrick Rose", "forecast": "Best Case", "health": "Green", "opp_type": "Renewal+Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 45, "days_to_close": 174, "close_date": "Sep 21, 2026", "next_steps": "Renewal pricing delivered; approval in Q3", "vanity_reasons": [], "slip_reasons": []}, {"id": 72, "account": "Clarendon Hills Cloud", "quarter": "Q3", "acv": 200000, "stage": "3 - Validation", "stage_n": 3, "owner": "Barack Obama", "forecast": "Best Case", "health": "Yellow", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 1, "days_since_created": 80, "days_to_close": 170, "close_date": "Sep 17, 2026", "next_steps": "Proof of concept results due Aug 30", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete"]}, {"id": 73, "account": "Darien Data", "quarter": "Q3", "acv": 190000, "stage": "1 - Discovery", "stage_n": 1, "owner": "Oprah Winfrey", "forecast": "Pipeline", "health": "Black", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 8, "days_since_created": 550, "days_to_close": 180, "close_date": "Sep 27, 2026", "next_steps": "", "vanity_reasons": ["Created 550 days ago \u2014 threshold is 90 days", "Stuck in 1 - Discovery \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 1 \u2014 early stage, high execution risk", "No next steps documented", "Account health is Black", "Forecast category is Pipeline (unqualified)"]}, {"id": 74, "account": "Willowbrook Works", "quarter": "Q3", "acv": 180000, "stage": "3 - Validation", "stage_n": 3, "owner": "Jennifer Hudson", "forecast": "Pipeline", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Medium", "slip_score": 4, "days_since_created": 120, "days_to_close": 151, "close_date": "Aug 29, 2026", "next_steps": "", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 75, "account": "Hinsdale Hub", "quarter": "Q3", "acv": 170000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Kanye West", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 60, "days_to_close": 125, "close_date": "Aug 03, 2026", "next_steps": "Proposal accepted; procurement next", "vanity_reasons": [], "slip_reasons": []}, {"id": 76, "account": "Westmont Works", "quarter": "Q3", "acv": 160000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Common", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 190, "days_to_close": 152, "close_date": "Aug 30, 2026", "next_steps": "", "vanity_reasons": ["Created 190 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 77, "account": "Villa Park Ventures", "quarter": "Q3", "acv": 152000, "stage": "3 - Validation", "stage_n": 3, "owner": "Chance the Rapper", "forecast": "Best Case", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 1, "days_since_created": 70, "days_to_close": 123, "close_date": "Aug 01, 2026", "next_steps": "Usage growing; expansion conversation started", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete"]}, {"id": 78, "account": "Addison Analytics", "quarter": "Q3", "acv": 145000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Lupe Fiasco", "forecast": "Best Case", "health": "Yellow", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 55, "days_to_close": 203, "close_date": "Oct 20, 2026", "next_steps": "Contract in review with legal", "vanity_reasons": [], "slip_reasons": []}, {"id": 79, "account": "Itasca Intelligence", "quarter": "Q3", "acv": 138000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Derrick Rose", "forecast": "Pipeline", "health": "Red", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 8, "days_since_created": 280, "days_to_close": 131, "close_date": "Aug 09, 2026", "next_steps": "", "vanity_reasons": ["Created 280 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Account health is Red", "Forecast category is Pipeline (unqualified)"]}, {"id": 80, "account": "Roselle Revenue", "quarter": "Q3", "acv": 130000, "stage": "3 - Validation", "stage_n": 3, "owner": "Barack Obama", "forecast": "Best Case", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 1, "days_since_created": 75, "days_to_close": 132, "close_date": "Aug 10, 2026", "next_steps": "QBR scheduled with expansion discussion", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete"]}, {"id": 81, "account": "Medinah Media", "quarter": "Q3", "acv": 125000, "stage": "1 - Discovery", "stage_n": 1, "owner": "Oprah Winfrey", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 460, "days_to_close": 158, "close_date": "Sep 05, 2026", "next_steps": "", "vanity_reasons": ["Created 460 days ago \u2014 threshold is 90 days", "Stuck in 1 - Discovery \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 1 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 82, "account": "Elk Grove Enterprise", "quarter": "Q3", "acv": 118000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Jennifer Hudson", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 50, "days_to_close": 150, "close_date": "Aug 28, 2026", "next_steps": "Final presentation with C-suite Aug 25", "vanity_reasons": [], "slip_reasons": []}, {"id": 83, "account": "Bensenville Bridge", "quarter": "Q3", "acv": 112000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Kanye West", "forecast": "Pipeline", "health": "Yellow", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 160, "days_to_close": 196, "close_date": "Oct 13, 2026", "next_steps": "", "vanity_reasons": ["Created 160 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 84, "account": "Franklin Park Fintech", "quarter": "Q3", "acv": 106000, "stage": "3 - Validation", "stage_n": 3, "owner": "Common", "forecast": "Pipeline", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Medium", "slip_score": 4, "days_since_created": 115, "days_to_close": 154, "close_date": "Sep 01, 2026", "next_steps": "", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 85, "account": "Northlake Net", "quarter": "Q3", "acv": 100000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Chance the Rapper", "forecast": "Best Case", "health": "Green", "opp_type": "Renewal+Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 40, "days_to_close": 147, "close_date": "Aug 25, 2026", "next_steps": "Renewal meeting scheduled; expect close Sept", "vanity_reasons": [], "slip_reasons": []}, {"id": 86, "account": "Stone Park Systems", "quarter": "Q3", "acv": 95000, "stage": "1 - Discovery", "stage_n": 1, "owner": "Lupe Fiasco", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 520, "days_to_close": 207, "close_date": "Oct 24, 2026", "next_steps": "", "vanity_reasons": ["Created 520 days ago \u2014 threshold is 90 days", "Stuck in 1 - Discovery \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 1 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 87, "account": "Melrose Park Media", "quarter": "Q3", "acv": 90000, "stage": "3 - Validation", "stage_n": 3, "owner": "Derrick Rose", "forecast": "Best Case", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 1, "days_since_created": 70, "days_to_close": 177, "close_date": "Sep 24, 2026", "next_steps": "Champion confirmed; business case approved", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete"]}, {"id": 88, "account": "Bellwood Bio", "quarter": "Q3", "acv": 85000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Barack Obama", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 230, "days_to_close": 129, "close_date": "Aug 07, 2026", "next_steps": "", "vanity_reasons": ["Created 230 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 89, "account": "Hillside Hub", "quarter": "Q3", "acv": 80000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Oprah Winfrey", "forecast": "Best Case", "health": "Yellow", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 55, "days_to_close": 205, "close_date": "Oct 22, 2026", "next_steps": "Reviewing final proposal; decision Sept 1", "vanity_reasons": [], "slip_reasons": []}, {"id": 90, "account": "Broadview Bridge", "quarter": "Q3", "acv": 75000, "stage": "3 - Validation", "stage_n": 3, "owner": "Jennifer Hudson", "forecast": "Pipeline", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Medium", "slip_score": 4, "days_since_created": 105, "days_to_close": 174, "close_date": "Sep 21, 2026", "next_steps": "", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 91, "account": "Maywood Media", "quarter": "Q3", "acv": 70000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Kanye West", "forecast": "Pipeline", "health": "Red", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 8, "days_since_created": 300, "days_to_close": 154, "close_date": "Sep 01, 2026", "next_steps": "", "vanity_reasons": ["Created 300 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Account health is Red", "Forecast category is Pipeline (unqualified)"]}, {"id": 92, "account": "Forest Park Fintech", "quarter": "Q3", "acv": 65000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Common", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 50, "days_to_close": 191, "close_date": "Oct 08, 2026", "next_steps": "Sponsor meeting Aug 15; expected close Sept", "vanity_reasons": [], "slip_reasons": []}, {"id": 93, "account": "River Forest Revenue", "quarter": "Q3", "acv": 60000, "stage": "3 - Validation", "stage_n": 3, "owner": "Chance the Rapper", "forecast": "Best Case", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 1, "days_since_created": 80, "days_to_close": 177, "close_date": "Sep 24, 2026", "next_steps": "Expansion into 2 new teams confirmed", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete"]}, {"id": 94, "account": "Elmwood Park Edge", "quarter": "Q3", "acv": 55000, "stage": "1 - Discovery", "stage_n": 1, "owner": "Lupe Fiasco", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 470, "days_to_close": 182, "close_date": "Sep 29, 2026", "next_steps": "", "vanity_reasons": ["Created 470 days ago \u2014 threshold is 90 days", "Stuck in 1 - Discovery \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 1 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 95, "account": "Harwood Heights Hub", "quarter": "Q3", "acv": 50000, "stage": "3 - Validation", "stage_n": 3, "owner": "Derrick Rose", "forecast": "Pipeline", "health": "Yellow", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Medium", "slip_score": 4, "days_since_created": 140, "days_to_close": 179, "close_date": "Sep 26, 2026", "next_steps": "", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 96, "account": "Norwood Park Net", "quarter": "Q4", "acv": 45000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Barack Obama", "forecast": "Best Case", "health": "Green", "opp_type": "Renewal+Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 45, "days_to_close": 298, "close_date": "Jan 23, 2027", "next_steps": "Renewal on track; Q3 close expected", "vanity_reasons": [], "slip_reasons": []}, {"id": 97, "account": "Edison Park Edge", "quarter": "Q4", "acv": 2000000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Oprah Winfrey", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 50, "days_to_close": 226, "close_date": "Nov 12, 2026", "next_steps": "Finalist; board approval needed; Jan close projected", "vanity_reasons": [], "slip_reasons": []}, {"id": 98, "account": "Niles Net", "quarter": "Q4", "acv": 1800000, "stage": "3 - Validation", "stage_n": 3, "owner": "Jennifer Hudson", "forecast": "Pipeline", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 2, "days_since_created": 80, "days_to_close": 267, "close_date": "Dec 23, 2026", "next_steps": "Expansion to global teams; Jan contract target", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "Forecast category is Pipeline (unqualified)"]}, {"id": 99, "account": "Skokie Scale", "quarter": "Q4", "acv": 1600000, "stage": "3 - Validation", "stage_n": 3, "owner": "Kanye West", "forecast": "Pipeline", "health": "Yellow", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Medium", "slip_score": 4, "days_since_created": 110, "days_to_close": 242, "close_date": "Nov 28, 2026", "next_steps": "", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 100, "account": "Lincolnwood Labs", "quarter": "Q4", "acv": 1400000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Common", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 65, "days_to_close": 236, "close_date": "Nov 22, 2026", "next_steps": "POC successful; board presentation Dec 1", "vanity_reasons": [], "slip_reasons": []}, {"id": 101, "account": "Glenview Group", "quarter": "Q4", "acv": 1200000, "stage": "3 - Validation", "stage_n": 3, "owner": "Chance the Rapper", "forecast": "Pipeline", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Medium", "slip_score": 4, "days_since_created": 130, "days_to_close": 264, "close_date": "Dec 20, 2026", "next_steps": "", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 102, "account": "Northbrook Net", "quarter": "Q4", "acv": 1100000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Lupe Fiasco", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 250, "days_to_close": 251, "close_date": "Dec 07, 2026", "next_steps": "", "vanity_reasons": ["Created 250 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 103, "account": "Deerfield Data", "quarter": "Q4", "acv": 1000000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Derrick Rose", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 60, "days_to_close": 286, "close_date": "Jan 11, 2027", "next_steps": "RFP win; contract negotiation Nov", "vanity_reasons": [], "slip_reasons": []}, {"id": 104, "account": "Lake Forest Fintech", "quarter": "Q4", "acv": 900000, "stage": "3 - Validation", "stage_n": 3, "owner": "Barack Obama", "forecast": "Pipeline", "health": "Yellow", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Medium", "slip_score": 4, "days_since_created": 140, "days_to_close": 277, "close_date": "Jan 02, 2027", "next_steps": "", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 105, "account": "Highland Park Hub", "quarter": "Q4", "acv": 850000, "stage": "5 - Negotiation", "stage_n": 5, "owner": "Oprah Winfrey", "forecast": "Commit", "health": "Green", "opp_type": "Renewal+Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 35, "days_to_close": 252, "close_date": "Dec 08, 2026", "next_steps": "Multi-year renewal; Jan execution date", "vanity_reasons": [], "slip_reasons": []}, {"id": 106, "account": "Highwood Hub", "quarter": "Q4", "acv": 800000, "stage": "3 - Validation", "stage_n": 3, "owner": "Jennifer Hudson", "forecast": "Pipeline", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Medium", "slip_score": 4, "days_since_created": 120, "days_to_close": 289, "close_date": "Jan 14, 2027", "next_steps": "", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 107, "account": "Lake Bluff Bridge", "quarter": "Q4", "acv": 750000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Kanye West", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 70, "days_to_close": 255, "close_date": "Dec 11, 2026", "next_steps": "Dec board approval; contract ready", "vanity_reasons": [], "slip_reasons": []}, {"id": 108, "account": "Waukegan Works", "quarter": "Q4", "acv": 700000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Common", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 320, "days_to_close": 289, "close_date": "Jan 14, 2027", "next_steps": "", "vanity_reasons": ["Created 320 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 109, "account": "North Chicago Net", "quarter": "Q4", "acv": 650000, "stage": "3 - Validation", "stage_n": 3, "owner": "Chance the Rapper", "forecast": "Best Case", "health": "Yellow", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 1, "days_since_created": 90, "days_to_close": 282, "close_date": "Jan 07, 2027", "next_steps": "Platform expansion; CS champion driving", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete"]}, {"id": 110, "account": "Zion Zone", "quarter": "Q4", "acv": 600000, "stage": "1 - Discovery", "stage_n": 1, "owner": "Lupe Fiasco", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 500, "days_to_close": 280, "close_date": "Jan 05, 2027", "next_steps": "", "vanity_reasons": ["Created 500 days ago \u2014 threshold is 90 days", "Stuck in 1 - Discovery \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 1 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 111, "account": "Beach Park Bio", "quarter": "Q4", "acv": 580000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Derrick Rose", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 60, "days_to_close": 223, "close_date": "Nov 09, 2026", "next_steps": "Technical validation done; Dec 15 target", "vanity_reasons": [], "slip_reasons": []}, {"id": 112, "account": "Winthrop Harbor Hub", "quarter": "Q4", "acv": 560000, "stage": "3 - Validation", "stage_n": 3, "owner": "Barack Obama", "forecast": "Pipeline", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Medium", "slip_score": 4, "days_since_created": 100, "days_to_close": 301, "close_date": "Jan 26, 2027", "next_steps": "", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 113, "account": "Antioch Analytics", "quarter": "Q4", "acv": 540000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Oprah Winfrey", "forecast": "Pipeline", "health": "Yellow", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 200, "days_to_close": 230, "close_date": "Nov 16, 2026", "next_steps": "", "vanity_reasons": ["Created 200 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 114, "account": "Gurnee Group", "quarter": "Q4", "acv": 520000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Jennifer Hudson", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 55, "days_to_close": 289, "close_date": "Jan 14, 2027", "next_steps": "Executive sponsor locked; Nov timeline", "vanity_reasons": [], "slip_reasons": []}, {"id": 115, "account": "Lindenhurst Labs", "quarter": "Q4", "acv": 500000, "stage": "3 - Validation", "stage_n": 3, "owner": "Kanye West", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Medium", "slip_score": 4, "days_since_created": 160, "days_to_close": 294, "close_date": "Jan 19, 2027", "next_steps": "", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 116, "account": "Lake Villa Ventures", "quarter": "Q4", "acv": 480000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Common", "forecast": "Best Case", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 65, "days_to_close": 299, "close_date": "Jan 24, 2027", "next_steps": "Expansion deal; CS-led; Dec close", "vanity_reasons": [], "slip_reasons": []}, {"id": 117, "account": "Round Lake Revenue", "quarter": "Q4", "acv": 460000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Chance the Rapper", "forecast": "Pipeline", "health": "Red", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 8, "days_since_created": 280, "days_to_close": 281, "close_date": "Jan 06, 2027", "next_steps": "", "vanity_reasons": ["Created 280 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Account health is Red", "Forecast category is Pipeline (unqualified)"]}, {"id": 118, "account": "Grayslake Group", "quarter": "Q4", "acv": 440000, "stage": "3 - Validation", "stage_n": 3, "owner": "Lupe Fiasco", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 1, "days_since_created": 80, "days_to_close": 241, "close_date": "Nov 27, 2026", "next_steps": "RFP submitted; finalist; Jan decision", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete"]}, {"id": 119, "account": "Libertyville Labs", "quarter": "Q4", "acv": 420000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Derrick Rose", "forecast": "Best Case", "health": "Yellow", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 60, "days_to_close": 255, "close_date": "Dec 11, 2026", "next_steps": "Renewal + 40% expansion; Nov paperwork", "vanity_reasons": [], "slip_reasons": []}, {"id": 120, "account": "Mundelein Media", "quarter": "Q4", "acv": 400000, "stage": "3 - Validation", "stage_n": 3, "owner": "Barack Obama", "forecast": "Pipeline", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Medium", "slip_score": 4, "days_since_created": 120, "days_to_close": 265, "close_date": "Dec 21, 2026", "next_steps": "", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 121, "account": "Vernon Hills Ventures", "quarter": "Q4", "acv": 385000, "stage": "1 - Discovery", "stage_n": 1, "owner": "Oprah Winfrey", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 600, "days_to_close": 297, "close_date": "Jan 22, 2027", "next_steps": "", "vanity_reasons": ["Created 600 days ago \u2014 threshold is 90 days", "Stuck in 1 - Discovery \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 1 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 122, "account": "Buffalo Grove Bridge", "quarter": "Q4", "acv": 370000, "stage": "3 - Validation", "stage_n": 3, "owner": "Jennifer Hudson", "forecast": "Best Case", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 1, "days_since_created": 75, "days_to_close": 255, "close_date": "Dec 11, 2026", "next_steps": "Expansion milestone hit; Jan renewal target", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete"]}, {"id": 123, "account": "Wheeling Works", "quarter": "Q4", "acv": 355000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Kanye West", "forecast": "Pipeline", "health": "Yellow", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 220, "days_to_close": 273, "close_date": "Dec 29, 2026", "next_steps": "", "vanity_reasons": ["Created 220 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 124, "account": "Midway Metrics", "quarter": "Q4", "acv": 340000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Common", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 55, "days_to_close": 227, "close_date": "Nov 13, 2026", "next_steps": "Final negotiation; Dec close", "vanity_reasons": [], "slip_reasons": []}, {"id": 125, "account": "Pullman Platform", "quarter": "Q4", "acv": 325000, "stage": "3 - Validation", "stage_n": 3, "owner": "Chance the Rapper", "forecast": "Pipeline", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Medium", "slip_score": 4, "days_since_created": 110, "days_to_close": 242, "close_date": "Nov 28, 2026", "next_steps": "", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 126, "account": "Bronzeville Blue Tech", "quarter": "Q4", "acv": 310000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Lupe Fiasco", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 290, "days_to_close": 231, "close_date": "Nov 17, 2026", "next_steps": "", "vanity_reasons": ["Created 290 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 127, "account": "Bridgeport Bridge", "quarter": "Q4", "acv": 295000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Derrick Rose", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 60, "days_to_close": 246, "close_date": "Dec 02, 2026", "next_steps": "LOI signed; contract Nov 15", "vanity_reasons": [], "slip_reasons": []}, {"id": 128, "account": "Canaryville Cloud", "quarter": "Q4", "acv": 280000, "stage": "3 - Validation", "stage_n": 3, "owner": "Barack Obama", "forecast": "Best Case", "health": "Yellow", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 1, "days_since_created": 85, "days_to_close": 235, "close_date": "Nov 21, 2026", "next_steps": "Platform maturity review; Dec goal", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete"]}, {"id": 129, "account": "McKinley Park Media", "quarter": "Q4", "acv": 268000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Oprah Winfrey", "forecast": "Pipeline", "health": "Red", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 8, "days_since_created": 260, "days_to_close": 305, "close_date": "Jan 30, 2027", "next_steps": "", "vanity_reasons": ["Created 260 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Account health is Red", "Forecast category is Pipeline (unqualified)"]}, {"id": 130, "account": "Back of the Yards AI", "quarter": "Q4", "acv": 255000, "stage": "3 - Validation", "stage_n": 3, "owner": "Jennifer Hudson", "forecast": "Pipeline", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Medium", "slip_score": 4, "days_since_created": 130, "days_to_close": 298, "close_date": "Jan 23, 2027", "next_steps": "", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 131, "account": "Englewood Edge", "quarter": "Q4", "acv": 242000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Kanye West", "forecast": "Best Case", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 55, "days_to_close": 300, "close_date": "Jan 25, 2027", "next_steps": "Upsell confirmed; Q4 expansion budget approved", "vanity_reasons": [], "slip_reasons": []}, {"id": 132, "account": "Chatham Cloud", "quarter": "Q4", "acv": 230000, "stage": "1 - Discovery", "stage_n": 1, "owner": "Common", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 580, "days_to_close": 299, "close_date": "Jan 24, 2027", "next_steps": "", "vanity_reasons": ["Created 580 days ago \u2014 threshold is 90 days", "Stuck in 1 - Discovery \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 1 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 133, "account": "Roseland Revenue", "quarter": "Q4", "acv": 218000, "stage": "3 - Validation", "stage_n": 3, "owner": "Chance the Rapper", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 1, "days_since_created": 70, "days_to_close": 248, "close_date": "Dec 04, 2026", "next_steps": "Champion strong; Nov close expected", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete"]}, {"id": 134, "account": "Hegewisch Hub", "quarter": "Q4", "acv": 206000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Lupe Fiasco", "forecast": "Pipeline", "health": "Yellow", "opp_type": "Upsell", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 180, "days_to_close": 285, "close_date": "Jan 10, 2027", "next_steps": "", "vanity_reasons": ["Created 180 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 135, "account": "Calumet Park Data", "quarter": "Q4", "acv": 195000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Derrick Rose", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 60, "days_to_close": 251, "close_date": "Dec 07, 2026", "next_steps": "IT approved; Jan paperwork", "vanity_reasons": [], "slip_reasons": []}, {"id": 136, "account": "Dolton Data", "quarter": "Q4", "acv": 185000, "stage": "3 - Validation", "stage_n": 3, "owner": "Barack Obama", "forecast": "Pipeline", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Medium", "slip_score": 4, "days_since_created": 100, "days_to_close": 306, "close_date": "Jan 31, 2027", "next_steps": "", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 137, "account": "Harvey Heights", "quarter": "Q4", "acv": 175000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Oprah Winfrey", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 320, "days_to_close": 302, "close_date": "Jan 27, 2027", "next_steps": "", "vanity_reasons": ["Created 320 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 138, "account": "Markham Metrics", "quarter": "Q4", "acv": 165000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Jennifer Hudson", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 55, "days_to_close": 279, "close_date": "Jan 04, 2027", "next_steps": "Q4 budget confirmed; Dec close", "vanity_reasons": [], "slip_reasons": []}, {"id": 139, "account": "Matteson Media", "quarter": "Q4", "acv": 155000, "stage": "3 - Validation", "stage_n": 3, "owner": "Kanye West", "forecast": "Pipeline", "health": "Yellow", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Medium", "slip_score": 4, "days_since_created": 115, "days_to_close": 221, "close_date": "Nov 07, 2026", "next_steps": "", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 140, "account": "Olympia Fields Ops", "quarter": "Q4", "acv": 145000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Common", "forecast": "Best Case", "health": "Green", "opp_type": "Renewal+Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 50, "days_to_close": 269, "close_date": "Dec 25, 2026", "next_steps": "Annual renewal; Jan execution", "vanity_reasons": [], "slip_reasons": []}, {"id": 141, "account": "Flossmoor Fintech", "quarter": "Q4", "acv": 135000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Chance the Rapper", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 240, "days_to_close": 215, "close_date": "Nov 01, 2026", "next_steps": "", "vanity_reasons": ["Created 240 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 142, "account": "Homewood Hub II", "quarter": "Q4", "acv": 125000, "stage": "3 - Validation", "stage_n": 3, "owner": "Lupe Fiasco", "forecast": "Best Case", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Low", "slip_score": 1, "days_since_created": 80, "days_to_close": 296, "close_date": "Jan 21, 2027", "next_steps": "Expansion milestone confirmed", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete"]}, {"id": 143, "account": "Park Forest II", "quarter": "Q4", "acv": 115000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Derrick Rose", "forecast": "Best Case", "health": "Yellow", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 60, "days_to_close": 271, "close_date": "Dec 27, 2026", "next_steps": "Budget unlock Q4; Dec target", "vanity_reasons": [], "slip_reasons": []}, {"id": 144, "account": "Richton Park II", "quarter": "Q4", "acv": 105000, "stage": "2 - Scoping", "stage_n": 2, "owner": "Barack Obama", "forecast": "Pipeline", "health": "Red", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 8, "days_since_created": 290, "days_to_close": 269, "close_date": "Dec 25, 2026", "next_steps": "", "vanity_reasons": ["Created 290 days ago \u2014 threshold is 90 days", "Stuck in 2 - Scoping \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 2 \u2014 early stage, high execution risk", "No next steps documented", "Account health is Red", "Forecast category is Pipeline (unqualified)"]}, {"id": 145, "account": "Sauk Village II", "quarter": "Q4", "acv": 95000, "stage": "3 - Validation", "stage_n": 3, "owner": "Oprah Winfrey", "forecast": "Pipeline", "health": "Green", "opp_type": "Upsell", "is_vanity": false, "slip_risk": "Medium", "slip_score": 4, "days_since_created": 120, "days_to_close": 229, "close_date": "Nov 15, 2026", "next_steps": "", "vanity_reasons": [], "slip_reasons": ["Stage 3 \u2014 validation not yet complete", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}, {"id": 146, "account": "Lansing Logistics", "quarter": "Q4", "acv": 85000, "stage": "4 - Proposal", "stage_n": 4, "owner": "Jennifer Hudson", "forecast": "Best Case", "health": "Green", "opp_type": "New Business", "is_vanity": false, "slip_risk": "Low", "slip_score": 0, "days_since_created": 50, "days_to_close": 234, "close_date": "Nov 20, 2026", "next_steps": "Contract drafted; Jan sign expected", "vanity_reasons": [], "slip_reasons": []}, {"id": 147, "account": "Glenwood Growth", "quarter": "Q4", "acv": 75000, "stage": "1 - Discovery", "stage_n": 1, "owner": "Kanye West", "forecast": "Pipeline", "health": "\u2014", "opp_type": "New Business", "is_vanity": true, "slip_risk": "High", "slip_score": 6, "days_since_created": 510, "days_to_close": 262, "close_date": "Dec 18, 2026", "next_steps": "", "vanity_reasons": ["Created 510 days ago \u2014 threshold is 90 days", "Stuck in 1 - Discovery \u2014 no progression to Stage 3+"], "slip_reasons": ["Stage 1 \u2014 early stage, high execution risk", "No next steps documented", "Forecast category is Pipeline (unqualified)"]}];
+let fQ="ALL", fFlag=null, sortF=null, sortDir=1;
+
+function setF(type,val,btn) {
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  if(type==='quarter') {
+    fQ=val;
+    document.querySelectorAll('[data-f="quarter"]').forEach(b=>{if(b.dataset.v==='ALL')b.classList.remove('active');});
+    btn.classList.add('active');
+  } else {
+    if(val==='CLEAR') { fFlag=null; btn.classList.add('active'); }
+    else { fFlag=val; btn.classList.add('active'); }
+    document.querySelectorAll('[data-f="quarter"]').forEach(b=>{if(b.dataset.v===fQ)b.classList.add('active');});
+  }
+  renderT();
+}
+
+function srt(f) {
+  if(sortF===f) sortDir*=-1; else {sortF=f; sortDir=-1;}
+  renderT();
+}
+
+function hDot(h) {
+  const m={'Green':'h-green','Yellow':'h-yellow','Red':'h-red','Black':'h-black','—':'h-none'};
+  return `<span class="hdot ${m[h]||'h-none'}"></span>${h}`;
+}
+
+function tog(i) {
+  const dr=document.querySelector(`.dr[data-i="${i}"]`);
+  const dp=document.getElementById(`dp-${i}`);
+  if(!dr||!dp) return;
+  const open=dp.classList.contains('open');
+  document.querySelectorAll('.dpanel').forEach(p=>p.classList.remove('open'));
+  document.querySelectorAll('.dr').forEach(r=>r.classList.remove('exp'));
+  if(!open) { dp.classList.add('open'); dr.classList.add('exp'); }
+}
+
+function renderT() {
+  const srch=(document.getElementById('srch').value||'').toLowerCase();
+  let dd=DEALS.filter(d=>{
+    if(fQ!=='ALL'&&d.quarter!==fQ) return false;
+    if(fFlag==='VANITY'&&!d.is_vanity) return false;
+    if(fFlag==='HIGH_SLIP'&&d.slip_risk!=='High') return false;
+    if(srch&&!d.account.toLowerCase().includes(srch)&&!d.owner.toLowerCase().includes(srch)) return false;
+    return true;
+  });
+  if(sortF) dd.sort((a,b)=>{
+    let av=a[sortF],bv=b[sortF];
+    if(typeof av==='string') return av.localeCompare(bv)*sortDir;
+    return (av-bv)*sortDir;
+  });
+  document.getElementById('dcnt').textContent=dd.length+' deals shown';
+  const nores=document.getElementById('nores');
+  nores.style.display=dd.length?'none':'block';
+  const body=document.getElementById('dtbody');
+  body.innerHTML='';
+  dd.forEach(d=>{
+    const qcls={'Q2':'qt-q2','Q3':'qt-q3','Q4':'qt-q4'}[d.quarter]||'';
+    const scls={'High':'rb-high','Medium':'rb-medium','Low':'rb-low'}[d.slip_risk]||'';
+    const acvStr='$'+d.acv.toLocaleString();
+    const vanBadge=d.is_vanity?'<span class="vbadge">Vanity</span>':'—';
+
+    // Vanity detail panel
+    let vanDetail='<div class="ds-title amber">🟡 Vanity Flags</div>';
+    if(d.is_vanity && d.vanity_reasons.length) {
+      d.vanity_reasons.forEach(r=>{
+        vanDetail+=`<div class="flag-item"><div class="fdot amber"></div><div class="ftext">${r}</div></div>`;
+      });
+    } else {
+      vanDetail+='<div class="flag-item"><div class="fdot green"></div><div class="ftext">Not vanity — Stage 3+ or created within 90 days</div></div>';
+    }
+
+    // Slip detail panel
+    let slipDetail=`<div class="ds-title red">🔴 Slip Risk: ${d.slip_risk} (Score: ${d.slip_score})</div>`;
+    if(d.slip_reasons.length) {
+      d.slip_reasons.forEach(r=>{
+        const dot=d.slip_risk==='High'?'red':'amber';
+        slipDetail+=`<div class="flag-item"><div class="fdot ${dot}"></div><div class="ftext">${r}</div></div>`;
+      });
+    } else {
+      slipDetail+='<div class="flag-item"><div class="fdot green"></div><div class="ftext">Low risk — good stage, next steps, health, and runway</div></div>';
+    }
+
+    // Deal snapshot
+    const ns=d.next_steps?`<em>${d.next_steps}</em>`:'<em style="color:var(--chred)">⚠️ No next steps documented</em>';
+    const snap=`<div class="ds-title blue">📋 Deal Snapshot</div>
+      <div class="df"><div class="dl">ACV</div><div class="dv">${acvStr}</div></div>
+      <div class="df"><div class="dl">Stage</div><div class="dv">${d.stage}</div></div>
+      <div class="df"><div class="dl">Forecast</div><div class="dv">${d.forecast}</div></div>
+      <div class="df"><div class="dl">Health</div><div class="dv">${d.health}</div></div>
+      <div class="df"><div class="dl">Days in Pipeline</div><div class="dv">${d.days_since_created} days</div></div>
+      <div class="df"><div class="dl">Next Steps</div><div class="dv">${ns}</div></div>`;
+
+    const tr=document.createElement('tr');
+    tr.className='dr'; tr.dataset.i=d.id;
+    tr.onclick=()=>tog(d.id);
+    tr.innerHTML=`
+      <td><span class="exp-icon">▶</span></td>
+      <td><strong>${d.account}</strong></td>
+      <td><span class="q-tag ${qcls}">${d.quarter}</span></td>
+      <td class="acv-val">${acvStr}</td>
+      <td>${d.stage}</td>
+      <td>${d.owner}</td>
+      <td>${d.forecast}</td>
+      <td>${hDot(d.health)}</td>
+      <td>${vanBadge}</td>
+      <td><span class="rbadge ${scls}">${d.slip_risk}</span></td>
+      <td>${d.days_since_created}d</td>
+      <td>${d.close_date}</td>`;
+    body.appendChild(tr);
+
+    const detailTr=document.createElement('tr');
+    detailTr.className='detail-row';
+    const detailTd=document.createElement('td');
+    detailTd.colSpan=12;
+    detailTd.innerHTML=`<div class="dpanel" id="dp-${d.id}"><div class="detail-grid">${vanDetail}</div><div class="detail-grid" style="margin-top:10px">${slipDetail}</div><div class="detail-grid" style="margin-top:10px">${snap}</div></div>`;
+    detailTr.appendChild(detailTd);
+    body.appendChild(detailTr);
+  });
+}
+document.addEventListener('DOMContentLoaded', ()=>{ setF('quarter','ALL',document.querySelector('.filter-btn.active')); });
+</script>
+</body>
+</html>

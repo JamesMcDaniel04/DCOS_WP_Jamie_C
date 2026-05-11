@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ITS DEMO TIME – Full Funnel GAP Analysis</title>
+<style>
+:root {
+  --navy:#171721; --blue:#6296AD; --white:#FFFFFF;
+  --bg:#F5F7FA; --card:#FFFFFF;
+  --text:#171721; --dim:#5A6B7D; --border:#D0D1D1;
+  --red:#C5221F; --orange:#B06000; --green:#137333; --purple:#6B21A8;
+  --surface:#BBBCBC;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',Arial,sans-serif;font-size:13px;line-height:1.5}
+.topbar{background:var(--blue);border-bottom:2px solid rgba(255,255,255,0.3);padding:0 24px;display:flex;align-items:center;height:52px}
+.topbar .brand{color:#fff;font-size:16px;font-weight:700;letter-spacing:0.3px}
+.topbar .sub{color:rgba(255,255,255,0.80);font-size:12px;margin-left:12px;border-left:1px solid rgba(255,255,255,0.35);padding-left:12px}
+.rpt-header{background:linear-gradient(135deg,#3A6B82 0%,#4A8099 60%,#5A9BB5 100%);padding:28px 32px;}
+.rpt-header h1{color:#fff;font-size:22px;font-weight:700;margin-bottom:4px}
+.rpt-header .meta{color:rgba(255,255,255,0.80);font-size:12px}
+.rpt-header .disclaimer{background:rgba(255,165,0,0.15);border:1px solid rgba(255,165,0,0.45);border-radius:6px;padding:8px 14px;margin-top:12px;color:rgba(255,255,255,0.90);font-size:11.5px}
+.main{max-width:1200px;margin:0 auto;padding:24px 20px}
+h2{font-size:16px;font-weight:700;color:var(--blue);margin-bottom:14px;padding-bottom:6px;border-bottom:2px solid var(--blue)}
+h3{font-size:13px;font-weight:600;color:var(--blue);margin:16px 0 10px}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:24px}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 18px}
+.kpi-label{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.kpi-value{font-size:22px;font-weight:700;color:var(--navy)}
+.kpi-sub{font-size:11px;color:var(--dim);margin-top:2px}
+.kpi-green .kpi-value{color:var(--green)}
+.kpi-red .kpi-value{color:var(--red)}
+.kpi-blue .kpi-value{color:var(--blue)}
+.section{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px 22px;margin-bottom:22px}
+table{width:100%;border-collapse:collapse}
+th{background:var(--blue);color:#fff;padding:9px 12px;text-align:left;font-size:12px;font-weight:600}
+td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:#F8FAFB}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.dim{color:var(--dim)}
+.badge{padding:2px 9px;border-radius:10px;font-size:11px;font-weight:600;display:inline-block}
+.b-critical{background:#FF0000;color:#fff}
+.b-red{background:#FFDAD8;color:#C5221F}
+.b-orange{background:#FFE0B2;color:#B06000}
+.b-yellow{background:#FFF8E1;color:#8B6914}
+.b-green{background:#D4EDDA;color:#137333}
+.b-none{background:#E8EAF6;color:#3949AB}
+/* FUNNEL */
+.funnel-wrap{display:flex;flex-direction:column;align-items:center;gap:0;margin:16px auto;max-width:650px}
+.funnel-step{position:relative;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.funnel-step .f-inner{text-align:center;z-index:1}
+.funnel-step .f-label{font-size:11px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.5px}
+.funnel-step .f-value{font-size:19px;font-weight:800;color:#fff}
+.funnel-step .f-sub{font-size:10px;color:rgba(255,255,255,0.75)}
+.funnel-conv{text-align:center;font-size:11px;color:var(--dim);margin:1px 0;padding:2px 0}
+.funnel-conv span{background:var(--bg);padding:2px 8px;border-radius:10px;border:1px solid var(--border)}
+.gap-crit{border-left:4px solid var(--red)}
+.gap-high{border-left:4px solid var(--orange)}
+.gap-med{border-left:4px solid #F9A825}
+.gap-low{border-left:4px solid var(--green)}
+.gap-row td:first-child{font-weight:600;font-size:12px}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span class="brand">ITS DEMO TIME</span>
+  <span class="sub">Full Funnel GAP Analysis</span>
+</div>
+<div class="rpt-header">
+  <h1>Full Funnel GAP Analysis</h1>
+  <div class="meta">Generated March 1, 2026 &nbsp;·&nbsp; FY26 = Feb 1, 2025 – Jan 31, 2026 &nbsp;·&nbsp; FY25 = Feb 1, 2024 – Jan 31, 2025</div>
+  <div class="disclaimer">
+    ⚠️ <strong>Data Disclaimer:</strong> All figures in this report are sourced directly from Salesforce CRM and may not tie to officially reported financial outcomes. Metrics reflect CRM data as of the report date and have not been reconciled against any financial statements.
+  </div>
+</div>
+<div class="main">
+
+<!-- HIGHLIGHTS -->
+<div class="section">
+  <h2>Highlights</h2>
+  <div class="kpi-grid">
+    <div class="kpi kpi-green">
+      <div class="kpi-label">FY26 Won ACV</div>
+      <div class="kpi-value">$86M</div>
+      <div class="kpi-sub">505 deals closed</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">FY25 Won ACV</div>
+      <div class="kpi-value">$52.5M</div>
+      <div class="kpi-sub">460 deals closed</div>
+    </div>
+    <div class="kpi kpi-blue">
+      <div class="kpi-label">Open Pipeline</div>
+      <div class="kpi-value">$120.5M</div>
+      <div class="kpi-sub">680 open deals</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">FY26 Win Rate</div>
+      <div class="kpi-value">63.9%</div>
+      <div class="kpi-sub">FY25: 60.5% · FY24: 63.3%</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">FY26 New Business</div>
+      <div class="kpi-value">$33.5M</div>
+      <div class="kpi-sub">155 NB deals won</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">FY26 Upsell ACV</div>
+      <div class="kpi-value">$53M</div>
+      <div class="kpi-sub">350 upsell deals</div>
+    </div>
+    <div class="kpi kpi-red">
+      <div class="kpi-label">At-Risk Stale ACV</div>
+      <div class="kpi-value">$52M</div>
+      <div class="kpi-sub">225 accounts · eng &lt;50, no recent meetings</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">FY26 MQLs</div>
+      <div class="kpi-value">2,430</div>
+      <div class="kpi-sub">Lead→Opp: 2.7% · Disq: 68%</div>
+    </div>
+  </div>
+</div>
+
+<!-- FULL FUNNEL -->
+<div class="section">
+  <h2>Full Funnel Overview</h2>
+  <p style="font-size:12px;color:var(--dim);margin-bottom:16px">FY26 cohort-based funnel. Anonymous Visitors and Campaign Touches represent reach; MQL onward shows pipeline progression.</p>
+  
+  <div class="funnel-wrap">
+    <div class="funnel-step" style="width:100%;background:#0D1F3C;border-radius:8px 8px 0 0;padding:14px 20px;clip-path:polygon(0 0,100% 0,95% 100%,5% 100%)">
+      <div class="f-inner"><div class="f-label">Anonymous Visitors</div><div class="f-value">23,580</div><div class="f-sub">Unique IPs identified via intent data</div></div>
+    </div>
+    <div class="funnel-conv"><span>↓ IP → Account match</span></div>
+    <div class="funnel-step" style="width:92%;background:#14336B;padding:14px 20px;clip-path:polygon(0 0,100% 0,95% 100%,5% 100%)">
+      <div class="f-inner"><div class="f-label">Campaign Touches</div><div class="f-value">66,510</div><div class="f-sub">Unique accounts touched via campaigns</div></div>
+    </div>
+    <div class="funnel-conv"><span>↓ Touch → MQL: 3.7%</span></div>
+    <div class="funnel-step" style="width:84%;background:#1A4A90;padding:14px 20px;clip-path:polygon(0 0,100% 0,95% 100%,5% 100%)">
+      <div class="f-inner"><div class="f-label">MQLs Generated (FY26)</div><div class="f-value">2,430</div><div class="f-sub">Marketing Qualified Leads · Lead→Opp: 2.7%</div></div>
+    </div>
+    <div class="funnel-conv"><span>↓ Stage 0 = Sales Accepted Leads (SAL)</span></div>
+    <div class="funnel-step" style="width:74%;background:#00648C;padding:14px 20px;clip-path:polygon(0 0,100% 0,95% 100%,5% 100%)">
+      <div class="f-inner"><div class="f-label">Opportunities Created (SAL)</div><div class="f-value">1,395</div></div>
+    </div>
+    <div class="funnel-conv"><span>↓ Stage 1 = Sales Qualified Leads (SQL) · 85% progressed</span></div>
+    <div class="funnel-step" style="width:62%;background:#0089A8;padding:14px 20px;clip-path:polygon(0 0,100% 0,95% 100%,5% 100%)">
+      <div class="f-inner"><div class="f-label">SQL – Stage 1 Reached</div><div class="f-value">1,190</div><div class="f-sub">Sales Qualified · 85% of SAL</div></div>
+    </div>
+    <div class="funnel-conv"><span>↓ Stage 2 = Qualified Pipeline · 35.7% of SQL</span></div>
+    <div class="funnel-step" style="width:50%;background:#00A3C4;padding:14px 20px;clip-path:polygon(0 0,100% 0,95% 100%,5% 100%)">
+      <div class="f-inner"><div class="f-label">Qualified Pipeline</div><div class="f-value">425</div><div class="f-sub">Stage 2 reached · 30% of SAL</div></div>
+    </div>
+    <div class="funnel-conv"><span>↓ Closed Won · 20% of SAL</span></div>
+    <div class="funnel-step" style="width:38%;background:#137333;padding:14px 20px;border-radius:0 0 8px 8px;clip-path:polygon(5% 0,95% 0,100% 100%,0 100%)">
+      <div class="f-inner"><div class="f-label">Closed Won</div><div class="f-value">275</div><div class="f-sub">FY26-created deals · $49M ACV</div></div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:20px">Open Pipeline by Stage</h3>
+  <table>
+    <thead><tr><th>Stage</th><th class="num">Deals</th><th class="num">ACV</th></tr></thead>
+    <tbody>
+      <tr><td>SAL – Sales Accepted (Disc)</td><td class='num'>295</td><td class='num'>$54.5M</td></tr>
+      <tr><td>SQL – Sales Qualified (Scope)</td><td class='num'>130</td><td class='num'>$18.5M</td></tr>
+      <tr><td>Validation</td><td class='num'>125</td><td class='num'>$22.5M</td></tr>
+      <tr><td>Proposal</td><td class='num'>70</td><td class='num'>$12.0M</td></tr>
+      <tr><td>Negotiation</td><td class='num'>55</td><td class='num'>$13.0M</td></tr>
+      <tr><td>Closing</td><td class='num'>5</td><td class='num'>$0.2M</td></tr>
+    </tbody>
+    <tfoot><tr style="background:#E8F4FD"><td><strong>Total Open</strong></td><td class="num"><strong>680</strong></td><td class="num"><strong>$120.7M</strong></td></tr></tfoot>
+  </table>
+</div>
+
+<!-- MQL ANALYSIS -->
+<div class="section">
+  <h2>MQL Analysis – FY26</h2>
+  <div class="kpi-grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin-bottom:16px">
+    <div class="kpi"><div class="kpi-label">Total MQLs</div><div class="kpi-value">2,430</div><div class="kpi-sub">FY26 (Feb 2025–Jan 2026)</div></div>
+    <div class="kpi kpi-red"><div class="kpi-label">Disqualified</div><div class="kpi-value">68%</div><div class="kpi-sub">1,655 of 2,430 MQLs</div></div>
+    <div class="kpi"><div class="kpi-label">Customer MQLs</div><div class="kpi-value">205</div><div class="kpi-sub">8.4% of total</div></div>
+    <div class="kpi"><div class="kpi-label">Non-Customer MQLs</div><div class="kpi-value">2,225</div><div class="kpi-sub">91.6% of total</div></div>
+    <div class="kpi kpi-red"><div class="kpi-label">Lead → Opp</div><div class="kpi-value">2.7%</div><div class="kpi-sub">MQL account → opp created after</div></div>
+  </div>
+
+  <h3>MQL Status by Customer vs. Non-Customer Account</h3>
+  <table>
+    <thead><tr><th>Segment</th><th class="num">Total</th><th class="num">Disqualified</th><th class="num">Open – Not Contacted</th><th class="num">Working – Contacted</th></tr></thead>
+    <tbody>
+      <tr><td>Customer Account</td><td class='num'>205</td><td class='num'>120 <span class='dim'>(59%)</span></td><td class='num'>50</td><td class='num'>10</td></tr>
+      <tr><td>Non-Customer Account</td><td class='num'>2,225</td><td class='num'>1,535 <span class='dim'>(69%)</span></td><td class='num'>305</td><td class='num'>170</td></tr>
+    </tbody>
+    <tfoot><tr style="background:#E8F4FD"><td><strong>Total</strong></td><td class="num"><strong>2,430</strong></td><td class="num"><strong>1,655</strong></td><td class="num"><strong>355</strong></td><td class="num"><strong>180</strong></td></tr></tfoot>
+  </table>
+  <p style="font-size:11px;color:var(--dim);margin-top:8px">Note: Lead→Opp matching is name-based; some MQLs may have converted via accounts not linkable by name alone.</p>
+</div>
+
+<!-- YoY PERFORMANCE -->
+<div class="section">
+  <h2>Year-over-Year Performance (FY24–FY26)</h2>
+  <p style="font-size:12px;color:var(--dim);margin-bottom:14px">Includes New Business + Upsell + Renewal+Upsell. FY26 is full year (Feb 2025–Jan 2026).</p>
+  <table>
+    <thead><tr><th>FY</th><th class="num">Deals Won</th><th class="num">Total ACV</th><th class="num">New Business ACV</th><th class="num">Upsell ACV</th><th class="num">Win Rate</th><th class="num">Total Closed</th></tr></thead>
+    <tbody>
+      <tr><td>FY24</td><td class='num'>570</td><td class='num'>$88M</td><td class='num'>$13.5M</td><td class='num'>$75M</td><td class='num'>63.3%</td><td class='num'>900</td></tr>
+      <tr><td>FY25</td><td class='num'>460</td><td class='num'>$52.5M</td><td class='num'>$15M</td><td class='num'>$37M</td><td class='num'>60.5%</td><td class='num'>760</td></tr>
+      <tr><td>FY26</td><td class='num'>505</td><td class='num'>$86M</td><td class='num'>$33.5M</td><td class='num'>$53M</td><td class='num'>63.9%</td><td class='num'>790</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- MEDIAN SALES CYCLE -->
+<div class="section">
+  <h2>Median Sales Cycle by Account Classification</h2>
+  <p style="font-size:12px;color:var(--dim);margin-bottom:14px">Measured from Stage 2 date to Close Won date. Closed Won deals with a recorded Stage 2 date only.</p>
+  <table>
+    <thead><tr><th>Account Classification</th><th class="num">FY25 Median</th><th class="num">FY26 Median</th></tr></thead>
+    <tbody>
+      <tr><td>Strategic</td><td>249d <span class='dim'>n=90</span></td><td>264d <span class='dim'>n=80</span></td></tr>
+      <tr><td>Large Enterprise</td><td>236d <span class='dim'>n=50</span></td><td>107d <span class='dim'>n=45</span></td></tr>
+      <tr><td>Small Enterprise</td><td>38d <span class='dim'>n=50</span></td><td>89d <span class='dim'>n=35</span></td></tr>
+      <tr><td>Small Business</td><td>140d <span class='dim'>n=85</span></td><td>105d <span class='dim'>n=80</span></td></tr>
+      <tr><td>Velocity</td><td>316d <span class='dim'>n=35</span></td><td>61d <span class='dim'>n=20</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- STALE AT-RISK OPPORTUNITIES -->
+<div class="section">
+  <h2>Stale At-Risk Opportunities – Engagement Filtered</h2>
+  <p style="font-size:12px;color:var(--dim);margin-bottom:12px">
+    Showing <strong>225 accounts</strong> (265 opportunities, <strong>$52M</strong> ACV) that are both stale (90+ days) 
+    <em>and</em> have account engagement &lt;50 with no meeting activity in the last 90 days or upcoming meetings.
+    These represent deals where reps may be holding pipeline open rather than driving to a decision.
+    Total stale pipeline (90d+) is 590 deals at $116.5M — the remainder have active engagement or recent meetings.
+  </p>
+  <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px">
+    <div class="kpi kpi-red"><div class="kpi-label">At-Risk Accounts</div><div class="kpi-value">225</div><div class="kpi-sub">Low engagement + no meetings</div></div>
+    <div class="kpi kpi-red"><div class="kpi-label">At-Risk ACV</div><div class="kpi-value">$52M</div><div class="kpi-sub">44% of all stale pipeline</div></div>
+    <div class="kpi"><div class="kpi-label">Total Stale Pipeline</div><div class="kpi-value">590</div><div class="kpi-sub">$116.5M ACV · 90+ days</div></div>
+    <div class="kpi"><div class="kpi-label">Active Stale</div><div class="kpi-value">325</div><div class="kpi-sub">Stale but have engagement/meetings</div></div>
+  </div>
+  <table>
+    <thead><tr><th>Account</th><th>Highest Stage</th><th class="num">ACV</th><th class="num">Days Stale</th><th class="num">Acct Eng</th><th>Last Meeting</th><th>Owner</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Skyridge Aerospace Corp</strong><br><span class='dim' style='font-size:11px'>Strategic</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$11M</td><td class='num'>889d</td>
+        <td class='num'><span class="badge b-red">10.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-11-24</span></td>
+        <td><span class='dim' style='font-size:11px'>Marcus Royster</span></td>
+      </tr>
+      <tr>
+        <td><strong>Pinnacle Media Group</strong><br><span class='dim' style='font-size:11px'>Strategic</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$4.5M</td><td class='num'>361d</td>
+        <td class='num'><span class="badge b-red">2.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-06-26</span></td>
+        <td><span class='dim' style='font-size:11px'>Layla Dominguez</span></td>
+      </tr>
+      <tr>
+        <td><strong>StoneGuard Solutions</strong><br><span class='dim' style='font-size:11px'>Small Enterprise</span></td>
+        <td><span style="background:#42A5F5;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">2 - Scoping</span></td>
+        <td class='num'>$2.5M</td><td class='num'>267d</td>
+        <td class='num'><span class="badge b-red">9.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-08-13</span></td>
+        <td><span class='dim' style='font-size:11px'>Trey Nakamura</span></td>
+      </tr>
+      <tr>
+        <td><strong>Atlas Analytics Inc.</strong><br><span class='dim' style='font-size:11px'>Strategic</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$2.5M</td><td class='num'>207d</td>
+        <td class='num'><span class="badge b-red">2.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-10-14</span></td>
+        <td><span class='dim' style='font-size:11px'>Layla Dominguez</span></td>
+      </tr>
+      <tr>
+        <td><strong>TerraNet Communications</strong><br><span class='dim' style='font-size:11px'>Strategic</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$2.5M</td><td class='num'>186d</td>
+        <td class='num'><span class="badge b-red">2.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-10-16</span></td>
+        <td><span class='dim' style='font-size:11px'>Trey Nakamura</span></td>
+      </tr>
+      <tr>
+        <td><strong>Apex Resource Industries</strong><br><span class='dim' style='font-size:11px'>Strategic</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$2.17M</td><td class='num'>206d</td>
+        <td class='num'><span class="badge b-red">4.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-08-19</span></td>
+        <td><span class='dim' style='font-size:11px'>Marcus Royster</span></td>
+      </tr>
+      <tr>
+        <td><strong>DataPulse Insights</strong><br><span class='dim' style='font-size:11px'>Strategic</span></td>
+        <td><span style="background:#42A5F5;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">2 - Scoping</span></td>
+        <td class='num'>$2M</td><td class='num'>253d</td>
+        <td class='num'><span class="badge b-red">1.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-07-08</span></td>
+        <td><span class='dim' style='font-size:11px'>Devon Okafor</span></td>
+      </tr>
+      <tr>
+        <td><strong>ClearTech Networks</strong><br><span class='dim' style='font-size:11px'>Large Enterprise</span></td>
+        <td><span style="background:#26C6DA;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">3 - Validation</span></td>
+        <td class='num'>$2M</td><td class='num'>799d</td>
+        <td class='num'><span class="badge b-red">13.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-11-06</span></td>
+        <td><span class='dim' style='font-size:11px'>Gio Ferreira</span></td>
+      </tr>
+      <tr>
+        <td><strong>Streamline Digital</strong><br><span class='dim' style='font-size:11px'>Velocity</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$1.5M</td><td class='num'>127d</td>
+        <td class='num'><span class="badge b-critical">0.0</span></td>
+        <td><span class='dim' style='font-size:11px'>Never</span></td>
+        <td><span class='dim' style='font-size:11px'>Trey Nakamura</span></td>
+      </tr>
+      <tr>
+        <td><strong>NordTel Systems</strong><br><span class='dim' style='font-size:11px'>Strategic</span></td>
+        <td><span style="background:#9CCC65;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">4 - Proposal</span></td>
+        <td class='num'>$1.5M</td><td class='num'>172d</td>
+        <td class='num'><span class="badge b-red">3.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-11-21</span></td>
+        <td><span class='dim' style='font-size:11px'>Marcus Royster</span></td>
+      </tr>
+      <tr>
+        <td><strong>CodeVault Technologies</strong><br><span class='dim' style='font-size:11px'>Small Enterprise</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$1.25M</td><td class='num'>115d</td>
+        <td class='num'><span class="badge b-red">1.0</span></td>
+        <td><span class='dim' style='font-size:11px'>Never</span></td>
+        <td><span class='dim' style='font-size:11px'>Trey Nakamura</span></td>
+      </tr>
+      <tr>
+        <td><strong>PowerGrid International</strong><br><span class='dim' style='font-size:11px'>Strategic</span></td>
+        <td><span style="background:#42A5F5;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">2 - Scoping</span></td>
+        <td class='num'>$1.25M</td><td class='num'>336d</td>
+        <td class='num'><span class="badge b-red">7.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-07-03</span></td>
+        <td><span class='dim' style='font-size:11px'>Zara Kowalczyk</span></td>
+      </tr>
+      <tr>
+        <td><strong>ChipCore Technologies</strong><br><span class='dim' style='font-size:11px'>Strategic</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$1.25M</td><td class='num'>532d</td>
+        <td class='num'><span class="badge b-critical">0.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2024-10-08</span></td>
+        <td><span class='dim' style='font-size:11px'>Tyler Henderson</span></td>
+      </tr>
+      <tr>
+        <td><strong>MedTalent Solutions</strong><br><span class='dim' style='font-size:11px'>Strategic</span></td>
+        <td><span style="background:#26C6DA;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">3 - Validation</span></td>
+        <td class='num'>$1.125M</td><td class='num'>722d</td>
+        <td class='num'><span class="badge b-red">2.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2024-11-25</span></td>
+        <td><span class='dim' style='font-size:11px'>Devon Okafor</span></td>
+      </tr>
+      <tr>
+        <td><strong>GlobalPay Technologies</strong><br><span class='dim' style='font-size:11px'>Strategic</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$1.08M</td><td class='num'>584d</td>
+        <td class='num'><span class="badge b-red">2.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-05-27</span></td>
+        <td><span class='dim' style='font-size:11px'>Marcus Royster</span></td>
+      </tr>
+      <tr>
+        <td><strong>MarketCore Exchange</strong><br><span class='dim' style='font-size:11px'>Strategic</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$1M</td><td class='num'>172d</td>
+        <td class='num'><span class="badge b-critical">0.0</span></td>
+        <td><span class='dim' style='font-size:11px'>Never</span></td>
+        <td><span class='dim' style='font-size:11px'>Devon Okafor</span></td>
+      </tr>
+      <tr>
+        <td><strong>SiliconEdge Components</strong><br><span class='dim' style='font-size:11px'>Strategic</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$1M</td><td class='num'>213d</td>
+        <td class='num'><span class="badge b-critical">0.0</span></td>
+        <td><span class='dim' style='font-size:11px'>Never</span></td>
+        <td><span class='dim' style='font-size:11px'>Remi Oduya</span></td>
+      </tr>
+      <tr>
+        <td><strong>CloudSecure IT</strong><br><span class='dim' style='font-size:11px'>Large Enterprise</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$1M</td><td class='num'>122d</td>
+        <td class='num'><span class="badge b-red">2.0</span></td>
+        <td><span class='dim' style='font-size:11px'>Never</span></td>
+        <td><span class='dim' style='font-size:11px'>Marcus Royster</span></td>
+      </tr>
+      <tr>
+        <td><strong>FacilityPro Software</strong><br><span class='dim' style='font-size:11px'>Large Enterprise</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$750K</td><td class='num'>158d</td>
+        <td class='num'><span class="badge b-red">2.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-11-19</span></td>
+        <td><span class='dim' style='font-size:11px'>Remi Oduya</span></td>
+      </tr>
+      <tr>
+        <td><strong>GeoPath Technologies</strong><br><span class='dim' style='font-size:11px'>Strategic</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$750K</td><td class='num'>213d</td>
+        <td class='num'><span class="badge b-critical">0.0</span></td>
+        <td><span class='dim' style='font-size:11px'>Never</span></td>
+        <td><span class='dim' style='font-size:11px'>Remi Oduya</span></td>
+      </tr>
+      <tr>
+        <td><strong>WaveCraft Semiconductor</strong><br><span class='dim' style='font-size:11px'>Large Enterprise</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$750K</td><td class='num'>532d</td>
+        <td class='num'><span class="badge b-critical">0.0</span></td>
+        <td><span class='dim' style='font-size:11px'>Never</span></td>
+        <td><span class='dim' style='font-size:11px'>Tyler Henderson</span></td>
+      </tr>
+      <tr>
+        <td><strong>FinEdge Banking Solutions</strong><br><span class='dim' style='font-size:11px'>Strategic</span></td>
+        <td><span style="background:#9CCC65;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">4 - Proposal</span></td>
+        <td class='num'>$750K</td><td class='num'>562d</td>
+        <td class='num'><span class="badge b-red">2.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2024-08-22</span></td>
+        <td><span class='dim' style='font-size:11px'>Marcus Royster</span></td>
+      </tr>
+      <tr>
+        <td><strong>WrkForce Dynamics</strong><br><span class='dim' style='font-size:11px'>Strategic</span></td>
+        <td><span style="background:#42A5F5;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">2 - Scoping</span></td>
+        <td class='num'>$750K</td><td class='num'>639d</td>
+        <td class='num'><span class="badge b-red">2.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-02-11</span></td>
+        <td><span class='dim' style='font-size:11px'>Zara Kowalczyk</span></td>
+      </tr>
+      <tr>
+        <td><strong>ShieldNet Cybersecurity</strong><br><span class='dim' style='font-size:11px'>Large Enterprise</span></td>
+        <td><span style="background:#26C6DA;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">3 - Validation</span></td>
+        <td class='num'>$750K</td><td class='num'>268d</td>
+        <td class='num'><span class="badge b-red">1.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-11-10</span></td>
+        <td><span class='dim' style='font-size:11px'>Zara Kowalczyk</span></td>
+      </tr>
+      <tr>
+        <td><strong>GuardLayer Security</strong><br><span class='dim' style='font-size:11px'>Large Enterprise</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$750K</td><td class='num'>133d</td>
+        <td class='num'><span class="badge b-critical">0.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-10-21</span></td>
+        <td><span class='dim' style='font-size:11px'>Tyler Henderson</span></td>
+      </tr>
+      <tr>
+        <td><strong>CleanPower Ventures</strong><br><span class='dim' style='font-size:11px'>Strategic</span></td>
+        <td><span style="background:#42A5F5;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">2 - Scoping</span></td>
+        <td class='num'>$600K</td><td class='num'>618d</td>
+        <td class='num'><span class="badge b-critical">0.0</span></td>
+        <td><span class='dim' style='font-size:11px'>Never</span></td>
+        <td><span class='dim' style='font-size:11px'>Marcus Royster</span></td>
+      </tr>
+      <tr>
+        <td><strong>CloudRoute Networks</strong><br><span class='dim' style='font-size:11px'>Velocity</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$600K</td><td class='num'>207d</td>
+        <td class='num'><span class="badge b-red">1.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-08-06</span></td>
+        <td><span class='dim' style='font-size:11px'>Remi Oduya</span></td>
+      </tr>
+      <tr>
+        <td><strong>TargetIQ Marketing</strong><br><span class='dim' style='font-size:11px'>Velocity</span></td>
+        <td><span style="background:#42A5F5;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">2 - Scoping</span></td>
+        <td class='num'>$500K</td><td class='num'>95d</td>
+        <td class='num'><span class="badge b-red">10.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-08-29</span></td>
+        <td><span class='dim' style='font-size:11px'>Jace Thornton</span></td>
+      </tr>
+      <tr>
+        <td><strong>SocialHub Platforms</strong><br><span class='dim' style='font-size:11px'>Large Enterprise</span></td>
+        <td><span style="background:#26C6DA;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">3 - Validation</span></td>
+        <td class='num'>$500K</td><td class='num'>557d</td>
+        <td class='num'><span class="badge b-red">11.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-10-14</span></td>
+        <td><span class='dim' style='font-size:11px'>Jace Thornton</span></td>
+      </tr>
+      <tr>
+        <td><strong>PrintSync Global</strong><br><span class='dim' style='font-size:11px'>Strategic</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$475K</td><td class='num'>157d</td>
+        <td class='num'><span class="badge b-red">1.0</span></td>
+        <td><span class='dim' style='font-size:11px'>Never</span></td>
+        <td><span class='dim' style='font-size:11px'>Tyler Henderson</span></td>
+      </tr>
+      <tr>
+        <td><strong>VerifyNow Data</strong><br><span class='dim' style='font-size:11px'>Large Enterprise</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$415K</td><td class='num'>218d</td>
+        <td class='num'><span class="badge b-red">3.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-08-16</span></td>
+        <td><span class='dim' style='font-size:11px'>Rodrigo Escobar</span></td>
+      </tr>
+      <tr>
+        <td><strong>ScaleUp Advisors</strong><br><span class='dim' style='font-size:11px'>Velocity</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$375K</td><td class='num'>743d</td>
+        <td class='num'><span class="badge b-red">1.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2024-07-09</span></td>
+        <td><span class='dim' style='font-size:11px'>Zara Kowalczyk</span></td>
+      </tr>
+      <tr>
+        <td><strong>CloudBurst Computing</strong><br><span class='dim' style='font-size:11px'>Velocity</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$275K</td><td class='num'>171d</td>
+        <td class='num'><span class="badge b-red">10.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-11-06</span></td>
+        <td><span class='dim' style='font-size:11px'>Andre Simmons</span></td>
+      </tr>
+      <tr>
+        <td><strong>SafeGuard Industries</strong><br><span class='dim' style='font-size:11px'>Strategic</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$250K</td><td class='num'>253d</td>
+        <td class='num'><span class="badge b-red">8.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-07-30</span></td>
+        <td><span class='dim' style='font-size:11px'>Layla Dominguez</span></td>
+      </tr>
+      <tr>
+        <td><strong>SkillPath Learning</strong><br><span class='dim' style='font-size:11px'>Velocity</span></td>
+        <td><span style="background:#9CCC65;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">4 - Proposal</span></td>
+        <td class='num'>$250K</td><td class='num'>267d</td>
+        <td class='num'><span class="badge b-red">5.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-09-26</span></td>
+        <td><span class='dim' style='font-size:11px'>Jace Thornton</span></td>
+      </tr>
+      <tr>
+        <td><strong>ConnectStay Hospitality</strong><br><span class='dim' style='font-size:11px'>Velocity</span></td>
+        <td><span style="background:#42A5F5;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">2 - Scoping</span></td>
+        <td class='num'>$250K</td><td class='num'>252d</td>
+        <td class='num'><span class="badge b-yellow">nan</span></td>
+        <td><span class='dim' style='font-size:11px'>Never</span></td>
+        <td><span class='dim' style='font-size:11px'>Nolan Whitfield</span></td>
+      </tr>
+      <tr>
+        <td><strong>WellPath Health</strong><br><span class='dim' style='font-size:11px'>Large Enterprise</span></td>
+        <td><span style="background:#26C6DA;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">3 - Validation</span></td>
+        <td class='num'>$200K</td><td class='num'>185d</td>
+        <td class='num'><span class="badge b-red">10.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-10-08</span></td>
+        <td><span class='dim' style='font-size:11px'>Bianca Chavez</span></td>
+      </tr>
+      <tr>
+        <td><strong>BuildDeploy Systems</strong><br><span class='dim' style='font-size:11px'>Small Business</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$160K</td><td class='num'>101d</td>
+        <td class='num'><span class="badge b-red">10.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-11-14</span></td>
+        <td><span class='dim' style='font-size:11px'>Desmond Cooper</span></td>
+      </tr>
+      <tr>
+        <td><strong>PayStack Processing</strong><br><span class='dim' style='font-size:11px'>Strategic</span></td>
+        <td><span style="background:#42A5F5;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">2 - Scoping</span></td>
+        <td class='num'>$150K</td><td class='num'>751d</td>
+        <td class='num'><span class="badge b-yellow">nan</span></td>
+        <td><span class='dim' style='font-size:11px'>Never</span></td>
+        <td><span class='dim' style='font-size:11px'>Marcus Royster</span></td>
+      </tr>
+      <tr>
+        <td><strong>ChainCore Infrastructure</strong><br><span class='dim' style='font-size:11px'>Small Business</span></td>
+        <td><span style="background:#26C6DA;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">3 - Validation</span></td>
+        <td class='num'>$110K</td><td class='num'>171d</td>
+        <td class='num'><span class="badge b-yellow">42.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-11-07</span></td>
+        <td><span class='dim' style='font-size:11px'>Santiago Ortega</span></td>
+      </tr>
+      <tr>
+        <td><strong>ContractFlow Legal</strong><br><span class='dim' style='font-size:11px'>Small Business</span></td>
+        <td><span style="background:#42A5F5;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">2 - Scoping</span></td>
+        <td class='num'>$100K</td><td class='num'>113d</td>
+        <td class='num'><span class="badge b-yellow">38.0</span></td>
+        <td><span class='dim' style='font-size:11px'>Never</span></td>
+        <td><span class='dim' style='font-size:11px'>Rodrigo Escobar</span></td>
+      </tr>
+      <tr>
+        <td><strong>AdYield Media</strong><br><span class='dim' style='font-size:11px'>Large Enterprise</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$100K</td><td class='num'>156d</td>
+        <td class='num'><span class="badge b-red">10.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-10-28</span></td>
+        <td><span class='dim' style='font-size:11px'>Santiago Ortega</span></td>
+      </tr>
+      <tr>
+        <td><strong>Summit Capital Partners</strong><br><span class='dim' style='font-size:11px'>Small Business</span></td>
+        <td><span style="background:#42A5F5;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">2 - Scoping</span></td>
+        <td class='num'>$90K</td><td class='num'>113d</td>
+        <td class='num'><span class="badge b-red">10.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-11-07</span></td>
+        <td><span class='dim' style='font-size:11px'>Rodrigo Escobar</span></td>
+      </tr>
+      <tr>
+        <td><strong>DataTrail Analytics</strong><br><span class='dim' style='font-size:11px'>Small Business</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$75K</td><td class='num'>120d</td>
+        <td class='num'><span class="badge b-orange">18.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-11-13</span></td>
+        <td><span class='dim' style='font-size:11px'>Santiago Ortega</span></td>
+      </tr>
+      <tr>
+        <td><strong>MapLogic Geospatial</strong><br><span class='dim' style='font-size:11px'>Velocity</span></td>
+        <td><span style="background:#5C6BC0;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">1 - Discovery</span></td>
+        <td class='num'>$55K</td><td class='num'>190d</td>
+        <td class='num'><span class="badge b-orange">31.0</span></td>
+        <td><span class='dim' style='font-size:11px'>2025-09-16</span></td>
+        <td><span class='dim' style='font-size:11px'>Bianca Chavez</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="margin-top:10px;font-size:11px;color:var(--dim)">
+    Engagement badges: <span class="badge b-critical">0</span> Zero &nbsp; 
+    <span class="badge b-red">1–14</span> Very Low &nbsp; 
+    <span class="badge b-orange">15–34</span> Low &nbsp; 
+    <span class="badge b-yellow">35–49</span> Below Threshold &nbsp;
+    <span class="badge b-none">N/A</span> Not tracked
+  </div>
+</div>
+
+
+<!-- FUNNEL & PERFORMANCE DIAGNOSTIC -->
+<div class="section">
+  <h2>Funnel &amp; Performance Diagnostic</h2>
+  <p style="font-size:12px;color:var(--dim);margin-bottom:18px">Full end-to-end analysis across all funnel stages. Identifies where volume is lost, whether the primary problem is efficiency or volume, data confidence gaps, and prioritized optimization experiments.</p>
+
+  <!-- STAGE CONVERSION TABLE -->
+  <h3>Stage-by-Stage Conversion Rates — FY26</h3>
+  <table style="margin-bottom:20px">
+    <thead>
+      <tr>
+        <th>Stage</th>
+        <th class="num">Count</th>
+        <th class="num">Conversion to Next</th>
+        <th class="num">Cumulative from Top</th>
+        <th>Assessment</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Anonymous Visitors</strong><br><span class="dim" style="font-size:11px">Intent / IP data</span></td>
+        <td class="num">23,580</td>
+        <td class="num">—</td>
+        <td class="num">100%</td>
+        <td><span class="badge b-green">Baseline</span></td>
+      </tr>
+      <tr style="background:#F8FAFB">
+        <td><strong>Campaign Touches</strong><br><span class="dim" style="font-size:11px">Unique accounts in campaigns</span></td>
+        <td class="num">66,510</td>
+        <td class="num">3.7% → MQL</td>
+        <td class="num">—</td>
+        <td><span class="badge b-yellow">Broad reach, low MQL yield</span></td>
+      </tr>
+      <tr>
+        <td><strong>MQLs Generated</strong><br><span class="dim" style="font-size:11px">Marketing Qualified Leads</span></td>
+        <td class="num">2,430</td>
+        <td class="num" style="color:var(--red);font-weight:700">2.7% → Opp</td>
+        <td class="num">—</td>
+        <td><span class="badge b-critical">🚨 Critical Bottleneck</span></td>
+      </tr>
+      <tr style="background:#F8FAFB">
+        <td><strong>SAL — Opportunities Created</strong><br><span class="dim" style="font-size:11px">Stage 0 · Sales Accepted Leads</span></td>
+        <td class="num">1,395</td>
+        <td class="num">85.3% → SQL</td>
+        <td class="num">100% of SAL</td>
+        <td><span class="badge b-green">Healthy acceptance rate</span></td>
+      </tr>
+      <tr>
+        <td><strong>SQL — Stage 1 Reached</strong><br><span class="dim" style="font-size:11px">Sales Qualified Leads</span></td>
+        <td class="num">1,190</td>
+        <td class="num">35.7% → Stage 2</td>
+        <td class="num">85% of SAL</td>
+        <td><span class="badge b-yellow">Moderate drop — qualification gap</span></td>
+      </tr>
+      <tr style="background:#F8FAFB">
+        <td><strong>Qualified Pipeline</strong><br><span class="dim" style="font-size:11px">Stage 2 reached</span></td>
+        <td class="num">425</td>
+        <td class="num">64.7% → Won</td>
+        <td class="num">30% of SAL</td>
+        <td><span class="badge b-green">Strong Stage 2+ close rate</span></td>
+      </tr>
+      <tr>
+        <td><strong>Closed Won</strong><br><span class="dim" style="font-size:11px">FY26-created deals</span></td>
+        <td class="num">275</td>
+        <td class="num">—</td>
+        <td class="num">20% of SAL</td>
+        <td><span class="badge b-green">Solid end-to-end yield</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+<!-- GAP REGISTER -->
+<div class="section">
+  <h2>GAP Register</h2>
+  <table>
+    <thead><tr><th>ID</th><th>Category</th><th>Finding</th><th>Severity</th><th>Recommended Action</th></tr></thead>
+    <tbody>
+      <tr class="gap-row gap-crit"><td>GAP-01</td><td>Pipeline Source</td><td>AE/Rep self-sourced pipeline represents less than 12% of total pipeline volume across 1,395 SAL opportunities. In FY26, 9 of 16 territory reps contributed zero self-sourced deals in at least one quarter, creating dangerous over-reliance on inbound marketing and SDR motion to fill the top of funnel.</td><td><span class="badge b-critical">Critical</span></td><td>Define AE sourcing targets per segment; hold weekly pipeline source reviews in QBRs; tie self-sourced quota to comp plan</td></tr>
+      <tr class="gap-row gap-crit"><td>GAP-02</td><td>Deal Qualification</td><td>265 opportunities ($52M ACV) are stale 90d+ with engagement below 50 and no meetings in 90 days. The top account, Skyridge Aerospace Corp, has been sitting in Stage 1 for 889 days with an engagement score of 10.0 — the deal was originally sourced at a trade show where a VP handed Marcus Royster a business card, and no substantive follow-up has occurred since the initial discovery call.</td><td><span class="badge b-critical">Critical</span></td><td>Mandatory management review cadence for any deal 90d+ with no activity; force close/loss decision within 30 days or remove from pipeline</td></tr>
+      <tr class="gap-row gap-high"><td>GAP-03</td><td>MQL Conversion</td><td>Lead→Opp conversion rate is 2.7% (65 of 2,430 FY26 MQLs resulted in a subsequent opportunity). MQL disqualification rate is 68%, meaning roughly 2 out of every 3 leads that marketing passes to sales are immediately rejected. Non-customer MQLs disqualify at 69% vs 59% for existing customer accounts, suggesting ICP targeting drift in outbound programs.</td><td><span class="badge b-orange">High</span></td><td>Review and tighten MQL scoring criteria; introduce account-level ICP fit score gate; improve SDR follow-up SLA from 72h to 24h</td></tr>
+      <tr class="gap-row gap-high"><td>GAP-04</td><td>Win Rate Trend</td><td>Qualified win rate (Stage 2+ closed deals only) is stable and strong: 63.3% (FY24), 60.5% (FY25), 63.9% (FY26). Earlier reporting showed win rates of 30–37% because Stage 0 and Stage 1 losses were incorrectly included in the denominator — those deals never reached qualified pipeline status and therefore do not reflect true competitive win/loss performance.</td><td><span class="badge b-orange">High</span></td><td>Standardize win rate reporting methodology across all dashboards to use Stage 2+ denominator only; conduct formal win/loss analysis for all FY25–26 qualified losses</td></tr>
+      <tr class="gap-row gap-high"><td>GAP-05</td><td>New Business Mix</td><td>FY26 New Business ACV ($33.5M) is 38.9% of total won ACV vs. 15.3% in FY24 — a dramatic and positive shift toward net-new logo acquisition. However, upsell still contributes 61.6% of total won ACV, and 7 of the top 10 FY26 revenue deals were expansions of existing accounts rather than new logos.</td><td><span class="badge b-orange">High</span></td><td>Set explicit new logo ACV targets at 45% of total for FY27; create dedicated new business overlay comp structure</td></tr>
+      <tr class="gap-row gap-med"><td>GAP-06</td><td>Sales Cycle Velocity</td><td>FY26 median cycle (Stage 2 → Close, qualified deals only): Strategic 264d (↑ from 249d in FY25), Large Enterprise 107d (↓ from 236d — notable improvement), Small Enterprise 89d, Velocity 61d, Small Business 105d. The Strategic segment cycle has lengthened for two consecutive years. Only deals with a recorded Stage 2 date are included; unqualified pipeline is excluded.</td><td><span class="badge b-yellow">Medium</span></td><td>Conduct root cause analysis on Strategic cycle extension; identify top 3 deals that dragged median up; benchmark against peer companies</td></tr>
+      <tr class="gap-row gap-med"><td>GAP-07</td><td>MQL Customer Expansion</td><td>Only 205 of 2,430 FY26 MQLs (8.4%) came from existing customer accounts. The marketing team ran three customer-targeted webinar series in FY26 but these generated fewer than 40 trackable MQLs combined, suggesting that either attendance was poor, attendees are not being captured as MQLs, or the content did not drive sufficient intent signals to qualify.</td><td><span class="badge b-yellow">Medium</span></td><td>Build dedicated customer marketing playbook; route customer intent signals directly to CSM team; set FY27 customer MQL target at 15%</td></tr>
+      <tr class="gap-row gap-low"><td>GAP-08</td><td>UTM / Campaign Attribution</td><td>Campaign attribution data is inconsistently applied — approximately 34% of SAL-stage opportunities have no Salesforce campaign source tag, and UTM parameter naming conventions are not enforced across paid, organic, and event channels. This makes it impossible to calculate true cost-per-opportunity or cost-per-pipeline-dollar for any individual marketing channel.</td><td><span class="badge b-green">Low</span></td><td>Implement and publish UTM standards documentation; audit all existing campaign source values in SFDC; gate new campaign creation on attribution tag compliance</td></tr>
+    </tbody>
+  </table>
+</div>
+
+</div><!-- end main -->
+</body>
+</html>

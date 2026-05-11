@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>David Park – Whitespace &amp; Green Space | Backstory</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Arial, sans-serif; background: #f0f0f0; color: #111; font-size: 14px; line-height: 1.5; }
+
+/* ─── HEADER ─── */
+.hdr { background: #000; color: #fff; padding: 24px 36px 20px; }
+.logo-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.logo-bars { display: flex; gap: 3px; align-items: flex-end; }
+.lb { background: #fff; width: 5px; border-radius: 2px; }
+.logo-slash { width: 0; height: 0; border-left: 8px solid transparent; border-bottom: 48px solid #fff; margin-left: 3px; }
+.logo-word { font-family: 'Arial Black', Arial, sans-serif; font-size: 28px; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+.hdr-lbl { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 3px; }
+.hdr-ttl { font-size: 20px; font-weight: 700; }
+.hdr-sub { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+.hdr-kpis { display: flex; margin-top: 16px; background: rgba(255,255,255,0.07); border-radius: 6px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+.hk { flex: 1; padding: 10px 14px; border-right: 1px solid rgba(255,255,255,0.08); }
+.hk:last-child { border-right: none; }
+.hk-l { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.4); margin-bottom: 2px; }
+.hk-v { font-size: 16px; font-weight: 700; }
+.hk-s { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 1px; }
+
+/* ─── URGENT BANNER ─── */
+.urgent { background: #111; border-left: 4px solid #fff; color: #fff; padding: 10px 16px; margin: 0; font-size: 12px; display: flex; align-items: center; gap: 10px; }
+.urgent strong { color: #facc15; }
+
+/* ─── BODY ─── */
+.body { padding: 22px 36px 56px; max-width: 1280px; margin: 0 auto; }
+.hint { font-size: 11px; color: #555; background: #fff; border: 1px solid #ddd; border-left: 3px solid #000; border-radius: 4px; padding: 7px 12px; margin-bottom: 16px; display: flex; align-items: center; gap: 7px; }
+
+/* ─── SECTION ─── */
+.sec { margin-bottom: 28px; }
+.sec-ttl { font-size: 13px; font-weight: 700; color: #000; border-bottom: 2px solid #000; padding-bottom: 6px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* ─── SUMMARY CARDS ─── */
+.sum-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
+.sc { border-radius: 6px; padding: 13px; text-align: center; border: 1px solid #ddd; background: #fff; }
+.sc.hi { border-left: 4px solid #15803d; }
+.sc.md { border-left: 4px solid #1d4ed8; }
+.sc.lo { border-left: 4px solid #b45309; }
+.sc.pg { border-left: 4px solid #9ca3af; }
+.sc-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 3px; }
+.sc.hi .sc-lbl { color: #15803d; } .sc.md .sc-lbl { color: #1d4ed8; }
+.sc.lo .sc-lbl { color: #b45309; } .sc.pg .sc-lbl { color: #9ca3af; }
+.sc-num { font-size: 26px; font-weight: 700; }
+.sc.hi .sc-num { color: #15803d; } .sc.md .sc-num { color: #1d4ed8; }
+.sc.lo .sc-num { color: #b45309; } .sc.pg .sc-num { color: #9ca3af; }
+.sc-sub { font-size: 10px; color: #777; margin-top: 2px; }
+
+/* ─── ALERTS ─── */
+.al { border-radius: 5px; padding: 9px 13px; margin-bottom: 9px; font-size: 12px; border-left: 3px solid; display: flex; gap: 7px; }
+.al-b { flex: 1; } .al-ttl { font-weight: 700; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1px; }
+.al-blk { background: #f5f5f5; border-color: #000; color: #111; }
+.al-grn { background: #f0fdf4; border-color: #16a34a; color: #15803d; }
+.al-red { background: #fff1f2; border-color: #dc2626; color: #b91c1c; }
+.al-ora { background: #fff7ed; border-color: #ea580c; color: #c2410c; }
+.al-ylw { background: #fefce8; border-color: #ca8a04; color: #92400e; }
+
+/* ─── SUBLABELS ─── */
+.sub-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.9px; color: #666; margin: 14px 0 7px; display: flex; align-items: center; gap: 7px; }
+.sub-lbl::after { content: ''; flex: 1; height: 1px; background: #ddd; }
+.divider { height: 1px; background: #ddd; margin: 20px 0; }
+
+/* ─── TABLES ─── */
+.tw { background: #fff; border-radius: 6px; border: 1px solid #ddd; overflow: hidden; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+table { width: 100%; border-collapse: collapse; }
+thead tr { background: #000; }
+thead th { color: #fff; font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; padding: 8px 10px; text-align: left; white-space: nowrap; }
+tbody tr { border-bottom: 1px solid #eee; cursor: pointer; transition: background 0.1s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: #f8f8f8; }
+tbody tr.open { background: #f5f5f5; }
+tbody td { padding: 8px 10px; font-size: 12px; vertical-align: middle; }
+.an { font-weight: 700; color: #000; font-size: 12px; }
+.tr { text-align: right; } .tc { text-align: center; }
+
+/* ─── TAGS ─── */
+.tg { display: inline-flex; align-items: center; font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.3px; white-space: nowrap; }
+.tg-hi  { background: #dcfce7; color: #15803d; }
+.tg-md  { background: #dbeafe; color: #1d4ed8; }
+.tg-lo  { background: #fef3c7; color: #92400e; }
+.tg-pg  { background: #f3f4f6; color: #6b7280; }
+.tg-grn { background: #dcfce7; color: #15803d; }
+.tg-ylw { background: #fef9c3; color: #854d0e; }
+.tg-red { background: #fee2e2; color: #dc2626; }
+.tg-blk { background: #111; color: #fff; }
+.tg-foc { background: #e0f2fe; color: #0369a1; }
+.tg-dep { background: #f0fdf4; color: #15803d; font-style: italic; }
+.tg-op  { background: #fff7ed; color: #c2410c; border: 1px solid #fb923c; }
+.tg-up  { background: #fefce8; color: #92400e; border: 1px solid #fbbf24; }
+.tg-mtg { background: #fefce8; color: #92400e; font-weight: 700; }
+.tg-ano { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+
+/* ─── PILLS ─── */
+.pills { display: flex; flex-wrap: wrap; gap: 3px; }
+.p { font-size: 9px; font-weight: 700; padding: 2px 5px; border-radius: 3px; }
+.p-df { background: #dbeafe; color: #1d4ed8; }
+.p-sai { background: #d1fae5; color: #065f46; }
+.p-fc { background: #ede9fe; color: #5b21b6; }
+.p-cp { background: #fee2e2; color: #991b1b; }
+.p-miss { background: #f1f5f9; color: #64748b; text-decoration: line-through; }
+
+/* ─── EXPAND BTN ─── */
+.ebtn { background: #000; color: #fff; border: none; border-radius: 4px; padding: 3px 8px; font-size: 10px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.ebtn:hover { background: #333; }
+.ebtn.open { background: #555; }
+
+/* ─── STRATEGY DRAWER ─── */
+.dr-row { display: none; }
+.dr-row.vis { display: table-row; }
+.dr-cell { padding: 0 !important; }
+.dr-inner { background: #fafafa; border-top: 2px solid #000; border-bottom: 1px solid #ddd; padding: 16px 20px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; animation: fd 0.15s ease; }
+@keyframes fd { from { opacity:0; transform: translateY(-4px); } to { opacity:1; transform: translateY(0); } }
+.db { background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; padding: 12px 13px; }
+.db-ttl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #000; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid #eee; }
+.db-list { list-style: none; }
+.db-list li { display: flex; gap: 6px; margin-bottom: 6px; font-size: 11px; line-height: 1.45; color: #333; }
+.db-list li:last-child { margin-bottom: 0; }
+.dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.dot-b { background: #000; } .dot-g { background: #15803d; } .dot-r { background: #dc2626; }
+.dot-o { background: #ea580c; } .dot-a { background: #ca8a04; }
+.chip { background: #f5f5f5; border: 1px solid #e5e5e5; border-radius: 5px; padding: 6px 9px; margin-bottom: 5px; font-size: 11px; }
+.chip:last-child { margin-bottom: 0; }
+.cn { font-weight: 700; color: #000; } .ct { color: #777; font-size: 10px; } .cw { color: #444; font-size: 10px; margin-top: 2px; }
+.op-bar { background: #fff7ed; border: 1px solid #fb923c; border-radius: 5px; padding: 7px 10px; margin-bottom: 6px; font-size: 11px; }
+.op-bar strong { color: #c2410c; }
+.ano-bar { background: #fff1f2; border: 1px solid #fca5a5; border-radius: 5px; padding: 7px 10px; margin-bottom: 6px; font-size: 11px; }
+.ano-bar strong { color: #991b1b; }
+
+/* ─── PG SECTION ─── */
+.pg-box { background: #f9f9f9; border: 1px solid #ddd; border-radius: 6px; overflow: hidden; margin-bottom: 10px; }
+.pg-hdr { background: #e8e8e8; padding: 9px 13px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #555; cursor: pointer; display: flex; justify-content: space-between; }
+.pg-hdr:hover { background: #ddd; }
+.pg-body { display: none; }
+.pg-body.vis { display: block; padding: 12px 14px; }
+
+/* ─── FOOTER ─── */
+.footer { font-size: 10px; color: #aaa; text-align: center; margin-top: 20px; }
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="logo-row">
+    <div class="logo-bars">
+      <div class="lb" style="height:44px;"></div>
+      <div class="lb" style="height:44px;"></div>
+      <div class="lb" style="height:44px;"></div>
+      <div class="logo-slash"></div>
+    </div>
+    <div class="logo-word">Backstory</div>
+  </div>
+  <div class="hdr-lbl">Whitespace &amp; Green Space Analysis &nbsp;·&nbsp; Module 03 &nbsp;·&nbsp; Powered by Backstory</div>
+  <div class="hdr-ttl">David Park — Territory Expansion Map</div>
+  <div class="hdr-sub">Source: Backstory Glass Export &nbsp;·&nbsp; March 24, 2026 &nbsp;·&nbsp; 11 Customer Accounts &nbsp;·&nbsp; No Active Prospects</div>
+  <div class="hdr-kpis">
+    <div class="hk"><div class="hk-l">Total RemTAM</div><div class="hk-v">$1.58M</div><div class="hk-s">All active accounts</div></div>
+    <div class="hk"><div class="hk-l">High Priority TAM</div><div class="hk-v">$710K</div><div class="hk-s">2 accounts</div></div>
+    <div class="hk"><div class="hk-l">Immediate Upsells</div><div class="hk-v">4</div><div class="hk-s">Overprovisioned seats</div></div>
+    <div class="hk"><div class="hk-l">Meetings Today</div><div class="hk-v">5</div><div class="hk-s">Mar 24 — act now</div></div>
+    <div class="hk"><div class="hk-l">Clari Competitive</div><div class="hk-v">5</div><div class="hk-s">SalesAI risk accounts</div></div>
+    <div class="hk"><div class="hk-l">Missing Forecasting</div><div class="hk-v">11 / 11</div><div class="hk-s">Universal upsell gap</div></div>
+  </div>
+</div>
+
+<!-- URGENT BANNER -->
+<div class="urgent">⚡ <strong>5 meetings today (Mar 24):</strong> Cohesity · Flexera · CrowdStrike · Pluralsight · Redis &nbsp;·&nbsp; <strong>1 tomorrow (Mar 25):</strong> Benchling
+</div>
+
+<div class="body">
+  <div class="hint">&#128073; <strong>Click any account row</strong> to expand strategy, contacts, and talking points. &nbsp;&#9888; = overprovisioned immediate upsell. &nbsp;&#9889; = meeting today/tomorrow.</div>
+
+  <!-- SUMMARY -->
+  <div class="sec">
+    <div class="sec-ttl">Priority Summary</div>
+    <div class="sum-row">
+      <div class="sc hi"><div class="sc-lbl">&#9679; High Priority</div><div class="sc-num">2</div><div class="sc-sub">$710,098 RemTAM</div><div class="sc-sub">Green · ICP 1-Focus · SF CRM</div></div>
+      <div class="sc md"><div class="sc-lbl">&#9679; Medium Priority</div><div class="sc-num">1</div><div class="sc-sub">$568,815 RemTAM</div><div class="sc-sub">Yellow health — large TAM when unlocked</div></div>
+      <div class="sc lo"><div class="sc-lbl">&#9679; Low Priority</div><div class="sc-num">2</div><div class="sc-sub">$288,472 RemTAM</div><div class="sc-sub">Red health or RemTAM &lt; $200K</div></div>
+      <div class="sc pg"><div class="sc-lbl">&#9711; PG — Deployed/Parked</div><div class="sc-num">6</div><div class="sc-sub">$0 RemTAM — protect &amp; true-up</div><div class="sc-sub">Overprovisioned true-ups exist</div></div>
+    </div>
+    <div class="al al-ylw"><div>&#9889;</div><div class="al-b"><div class="al-ttl">Forecasting Is Missing from ALL 11 Accounts</div>Not a single account has Forecasting entitled across David Park's entire book. This is the #1 universal expansion play. Prioritize Forecasting in every meeting today — especially Cohesity (greenfield) and CyberArk.</div></div>
+    <div class="al al-blk"><div>&#9888;</div><div class="al-b"><div class="al-ttl">SalesAI Is Missing from ALL 11 Accounts — Territory Is DF-Only</div>David Park's entire book runs exclusively on Data Foundations. No SalesAI entitlements exist anywhere in the territory. This is a significant expansion opportunity once Forecasting is established.</div></div>
+    <div class="al al-ora"><div>&#9888;</div><div class="al-b"><div class="al-ttl">4 Accounts Have Overprovisioned DF Seats — True-Up Conversations Ready</div>Black Box (+330), CrowdStrike (+100), Benchling (+46), Redis (+27) are all running over entitlement. Note: Pluralsight and Skillsoft show 1,000,000 overprov — confirmed data anomaly, do not use in pricing.</div></div>
+    <div class="al al-grn"><div>&#9889;</div><div class="al-b"><div class="al-ttl">5 Meetings Today — Use This Report NOW</div>Cohesity · Flexera · CrowdStrike · Pluralsight · Redis all have meetings scheduled today March 24. Pull the strategy for each before you go in.</div></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ══════════ MAIN TABLE ══════════ -->
+  <div class="sec">
+    <div class="sec-ttl">Customer Accounts — Click Any Row for Strategy &amp; Contacts</div>
+
+    <!-- HIGH PRIORITY -->
+    <div class="sub-lbl">High Priority — 2 Accounts</div>
+    <div class="tw">
+      <table>
+        <thead><tr>
+          <th>Account</th><th class="tc">Eng</th><th class="tc">Health</th><th class="tc">ICP</th><th>CRM</th>
+          <th>Current Products</th><th>Missing Products</th><th>Overprov Flag</th>
+          <th class="tr">Rem TAM</th><th class="tc">Next Mtg</th><th class="tc">Priority</th><th></th>
+        </tr></thead>
+        <tbody>
+
+          <!-- COHESITY -->
+          <tr id="tr-coh" onclick="tog('coh')">
+            <td><span class="an">⚡ Cohesity</span></td>
+            <td class="tc">80</td>
+            <td class="tc"><span class="tg tg-grn">Green</span></td>
+            <td class="tc"><span class="tg tg-foc">1-Focus</span></td>
+            <td>Salesforce</td>
+            <td><div class="pills"><span class="p p-miss">DF — None</span><span class="p p-miss">SalesAI</span><span class="p p-miss">Forecast</span></div></td>
+            <td><div class="pills"><span class="p p-df">Data Foundations</span><span class="p p-sai">SalesAI</span><span class="p p-fc">Forecasting</span></div></td>
+            <td><span class="tg" style="background:#e0f2fe;color:#0369a1;">Greenfield</span></td>
+            <td class="tr">$449,614</td>
+            <td class="tc"><span class="tg tg-mtg">Today 10:30</span></td>
+            <td class="tc"><span class="tg tg-hi">High</span></td>
+            <td><button class="ebtn" id="btn-coh">▼ Strategy</button></td>
+          </tr>
+          <tr class="dr-row" id="dr-coh"><td class="dr-cell" colspan="12">
+            <div class="dr-inner">
+              <div class="db">
+                <div class="db-ttl">Strategy</div>
+                <ul class="db-list">
+                  <li><span class="dot dot-g"></span>Complete greenfield customer — TODAY's meeting (10:30) is critical intake. No products entitled yet; understand current state and champion readiness.</li>
+                  <li><span class="dot dot-b"></span>Lead with Data Foundations as the entry product. Position Forecasting as the immediate follow-on expansion.</li>
+                  <li><span class="dot dot-a"></span>Clari is in the tech stack — acknowledge it but position Backstory Forecasting around CRM data fidelity and manager-level accountability that Clari doesn't address.</li>
+                  <li><span class="dot dot-g"></span>No overprovisioned seats — no friction going in. Pure discovery and vision-setting opportunity.</li>
+                  <li><span class="dot dot-b"></span>Strategic classification + largest High Priority RemTAM ($449K). This is a flagship deal to build.</li>
+                </ul>
+              </div>
+              <div class="db">
+                <div class="db-ttl">Who to Contact</div>
+                <div class="chip"><span class="cn">VP Revenue Operations</span><div class="ct">Primary champion — controls tech stack and data strategy</div><div class="cw">Goal: Establish DF business case and discovery</div></div>
+                <div class="chip"><span class="cn">CRO / Chief Revenue Officer</span><div class="ct">Executive sponsor — needed for any strategic commitment</div><div class="cw">Goal: Tie Backstory to revenue outcomes</div></div>
+                <div class="chip"><span class="cn">VP Sales</span><div class="ct">Key influencer — will feel the impact of Forecasting</div><div class="cw">Goal: Surface the forecasting pain point firsthand</div></div>
+              </div>
+              <div class="db">
+                <div class="db-ttl">Talking Points</div>
+                <ul class="db-list">
+                  <li><span class="dot dot-g"></span>All three products are wide open — frame this as building the full RevOps foundation from day one.</li>
+                  <li><span class="dot dot-a"></span>"Your team has Clari — how confident are you that the forecast data flowing into it is clean and complete?"</li>
+                  <li><span class="dot dot-b"></span>Forecasting: 0 seats entitled — present this as the most immediate ROI conversation once DF is in place.</li>
+                  <li><span class="dot dot-o"></span>SalesAI gap is real — but sequence: DF first, Forecasting second, SalesAI third. Don't overload today's discovery.</li>
+                  <li><span class="dot dot-g"></span>Highlight that Backstory integrates directly with Salesforce at the activity layer — not just CRM data surfacing.</li>
+                </ul>
+              </div>
+            </div>
+          </td></tr>
+
+          <!-- CYBERARK -->
+          <tr id="tr-cya" onclick="tog('cya')">
+            <td><span class="an">CyberArk</span></td>
+            <td class="tc">90</td>
+            <td class="tc"><span class="tg tg-grn">Green</span></td>
+            <td class="tc"><span class="tg tg-foc">1-Focus</span></td>
+            <td>Salesforce</td>
+            <td><div class="pills"><span class="p p-df">DF 856 seats</span></div></td>
+            <td><div class="pills"><span class="p p-sai">SalesAI</span><span class="p p-fc">Forecasting</span></div></td>
+            <td>—</td>
+            <td class="tr">$260,484</td>
+            <td class="tc"><span style="font-size:11px;color:#777;">Apr 8</span></td>
+            <td class="tc"><span class="tg tg-hi">High</span></td>
+            <td><button class="ebtn" id="btn-cya">▼ Strategy</button></td>
+          </tr>
+          <tr class="dr-row" id="dr-cya"><td class="dr-cell" colspan="12">
+            <div class="dr-inner">
+              <div class="db">
+                <div class="db-ttl">Strategy</div>
+                <ul class="db-list">
+                  <li><span class="dot dot-g"></span>Solid DF deployment at 856 seats. Health is Green (90). Time to expand the footprint into Forecasting and SalesAI.</li>
+                  <li><span class="dot dot-b"></span>Lead expansion with Forecasting — cleanest upsell given DF is already embedded and delivering value.</li>
+                  <li><span class="dot dot-a"></span>Clari is in the stack — position Backstory Forecasting as complementary (activity data layer) not competitive. Don't lead with SalesAI until Forecasting is closed.</li>
+                  <li><span class="dot dot-g"></span>Strategic account classification — executive relationship matters. Use Apr 8 meeting to set the expansion roadmap.</li>
+                  <li><span class="dot dot-b"></span>No overprovisioned seats = no billing friction. Clean expansion conversation.</li>
+                </ul>
+              </div>
+              <div class="db">
+                <div class="db-ttl">Who to Contact</div>
+                <div class="chip"><span class="cn">VP Sales Strategy / RevOps</span><div class="ct">Current DF champion — controls expansion decisions</div><div class="cw">Goal: Build Forecasting business case for Apr 8 meeting</div></div>
+                <div class="chip"><span class="cn">CRO</span><div class="ct">Executive sponsor — needed for SalesAI investment</div><div class="cw">Goal: Elevate conversation to strategic roadmap</div></div>
+                <div class="chip"><span class="cn">VP Sales</span><div class="ct">End user of Forecasting — bring them into ROI story</div><div class="cw">Goal: Validate current forecasting pain and accuracy</div></div>
+              </div>
+              <div class="db">
+                <div class="db-ttl">Talking Points</div>
+                <ul class="db-list">
+                  <li><span class="dot dot-g"></span>"You're getting full value from DF — the next logical step is Forecasting, which turns that activity data into manager-level accuracy."</li>
+                  <li><span class="dot dot-a"></span>Clari displacement: "Forecasting works alongside Clari — it feeds your CRM with the clean activity signal that makes your Clari forecast trustworthy."</li>
+                  <li><span class="dot dot-b"></span>Forecasting: 0 entitled across ALL David Park's accounts — frame as a territory-wide gap they're ahead of the curve to solve first.</li>
+                  <li><span class="dot dot-o"></span>SalesAI: Table for next meeting post-Forecasting close. Don't introduce Clari objections too early.</li>
+                  <li><span class="dot dot-g"></span>DF utilization at 856/856 = near full capacity. Position expansion naturally: "Your team is fully adopted — now let's build on that foundation."</li>
+                </ul>
+              </div>
+            </div>
+          </td></tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <!-- MEDIUM PRIORITY -->
+    <div class="sub-lbl">Medium Priority — 1 Account</div>
+    <div class="tw">
+      <table>
+        <thead><tr>
+          <th>Account</th><th class="tc">Eng</th><th class="tc">Health</th><th class="tc">ICP</th><th>CRM</th>
+          <th>Current Products</th><th>Missing Products</th><th>Overprov Flag</th>
+          <th class="tr">Rem TAM</th><th class="tc">Next Mtg</th><th class="tc">Priority</th><th></th>
+        </tr></thead>
+        <tbody>
+
+          <!-- BLACK BOX -->
+          <tr id="tr-blk" onclick="tog('blk')">
+            <td><span class="an">Black Box</span></td>
+            <td class="tc">75</td>
+            <td class="tc"><span class="tg tg-ylw">Yellow</span></td>
+            <td class="tc"><span class="tg tg-foc">1-Focus</span></td>
+            <td>Salesforce</td>
+            <td><div class="pills"><span class="p p-df">DF 300 seats</span></div></td>
+            <td><div class="pills"><span class="p p-sai">SalesAI</span><span class="p p-fc">Forecasting</span></div></td>
+            <td><span class="tg tg-op">⚠ DF +330 seats</span></td>
+            <td class="tr">$568,815</td>
+            <td class="tc"><span style="font-size:11px;color:#777;">Not scheduled</span></td>
+            <td class="tc"><span class="tg tg-md">Medium</span></td>
+            <td><button class="ebtn" id="btn-blk">▼ Strategy</button></td>
+          </tr>
+          <tr class="dr-row" id="dr-blk"><td class="dr-cell" colspan="12">
+            <div class="dr-inner">
+              <div class="db">
+                <div class="db-ttl">Strategy</div>
+                <ul class="db-list">
+                  <li><span class="dot dot-a"></span>Health gated at 75 (Yellow) — do not lead with expansion. Stabilize engagement and address adoption issues first.</li>
+                  <li><span class="dot dot-o"></span>DF +330 overprov seats is a billing conversation that can happen NOW, independent of health. This is the most significant valid overprov in the territory — don't let it sit.</li>
+                  <li><span class="dot dot-b"></span>Largest Medium-tier account at $568K RemTAM — when health recovers to Green, this becomes a top High Priority account instantly.</li>
+                  <li><span class="dot dot-g"></span>No Clari in tech stack — SalesAI has no competitive headwind here. Stage the conversation: true-up → health → Forecasting → SalesAI.</li>
+                  <li><span class="dot dot-b"></span>Book a meeting now. No next meeting scheduled — momentum gap that needs to be closed.</li>
+                </ul>
+              </div>
+              <div class="db">
+                <div class="db-ttl">Who to Contact</div>
+                <div class="chip"><span class="cn">VP Revenue Operations</span><div class="ct">Owns the DF deployment — surface adoption friction</div><div class="cw">Goal: Diagnose health issues and path to Green</div></div>
+                <div class="chip"><span class="cn">VP Sales</span><div class="ct">Business stakeholder — largest RemTAM when unlocked</div><div class="cw">Goal: Tie health recovery to Forecasting roadmap</div></div>
+                <div class="chip"><span class="cn">Head of Sales Operations</span><div class="ct">Approves billing / true-up conversation</div><div class="cw">Goal: Resolve 330-seat overprov billing immediately</div></div>
+              </div>
+              <div class="db">
+                <div class="db-ttl">Talking Points</div>
+                <ul class="db-list">
+                  <li><span class="dot dot-o"></span>"Your team is running 330 seats beyond entitlement right now — let's get that formalized so you're protected and we can build on it."</li>
+                  <li><span class="dot dot-a"></span>Health: "I'm seeing engagement levels that tell me there may be adoption friction — can we walk through where the team is getting stuck?"</li>
+                  <li><span class="dot dot-b"></span>Forecasting: Reserve for follow-up meeting after health moves to Green. Don't introduce expansion while adoption is shaky.</li>
+                  <li><span class="dot dot-g"></span>Framing for $568K RemTAM: "Black Box is one of the strongest expansion opportunities in my book — I want to make sure we're set up to get there together."</li>
+                  <li><span class="dot dot-b"></span>No Clari — SalesAI will be a clean expansion story when the time comes. Plant the seed.</li>
+                </ul>
+              </div>
+            </div>
+          </td></tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <!-- LOW PRIORITY -->
+    <div class="sub-lbl">Low Priority — 2 Accounts</div>
+    <div class="tw">
+      <table>
+        <thead><tr>
+          <th>Account</th><th class="tc">Eng</th><th class="tc">Health</th><th class="tc">ICP</th><th>CRM</th>
+          <th>Current Products</th><th>Missing Products</th><th>Overprov Flag</th>
+          <th class="tr">Rem TAM</th><th class="tc">Next Mtg</th><th class="tc">Priority</th><th></th>
+        </tr></thead>
+        <tbody>
+
+          <!-- SKILLSOFT -->
+          <tr id="tr-ski" onclick="tog('ski')">
+            <td><span class="an">Skillsoft</span></td>
+            <td class="tc">80</td>
+            <td class="tc"><span class="tg tg-grn">Green</span></td>
+            <td class="tc"><span class="tg tg-foc">1-Focus</span></td>
+            <td>Salesforce</td>
+            <td><div class="pills"><span class="p p-df">DF 475 seats</span></div></td>
+            <td><div class="pills"><span class="p p-sai">SalesAI</span><span class="p p-fc">Forecasting</span></div></td>
+            <td><span class="tg tg-ano">⚠ Data Anomaly</span></td>
+            <td class="tr">$137,500</td>
+            <td class="tc"><span style="font-size:11px;color:#777;">Apr 2</span></td>
+            <td class="tc"><span class="tg tg-lo">Low</span></td>
+            <td><button class="ebtn" id="btn-ski">▼ Strategy</button></td>
+          </tr>
+          <tr class="dr-row" id="dr-ski"><td class="dr-cell" colspan="12">
+            <div class="dr-inner">
+              <div class="db">
+                <div class="db-ttl">Strategy</div>
+                <ul class="db-list">
+                  <li><span class="dot dot-b"></span>RemTAM below $200K threshold — low priority this cycle. Health is Green and ICP is right, but deal size limits near-term investment.</li>
+                  <li><span class="dot dot-r"></span>Glass shows DF Overprovisioned = 1,000,000 seats — this is a confirmed data anomaly (same pattern as Windy City Storage). Do NOT use in pricing or true-up conversations.</li>
+                  <li><span class="dot dot-a"></span>Flag the Glass data anomaly to RevOps/Ops team for correction. Having bad data visible to leadership is a risk.</li>
+                  <li><span class="dot dot-g"></span>Monitor for headcount growth. When RemTAM crosses $200K, immediately re-tier to High Priority.</li>
+                  <li><span class="dot dot-b"></span>No Clari — SalesAI has no headwind when expansion is appropriate.</li>
+                </ul>
+              </div>
+              <div class="db">
+                <div class="db-ttl">Who to Contact</div>
+                <div class="chip"><span class="cn">Sales Ops Leader</span><div class="ct">Current DF owner — maintain relationship</div><div class="cw">Goal: Check in on adoption, surface growth signals</div></div>
+                <div class="chip"><span class="cn">VP Sales</span><div class="ct">Business stakeholder — flag expansion timing</div><div class="cw">Goal: Alert to Forecasting opportunity when RemTAM grows</div></div>
+              </div>
+              <div class="db">
+                <div class="db-ttl">Talking Points</div>
+                <ul class="db-list">
+                  <li><span class="dot dot-b"></span>Keep Apr 2 meeting brief — check-in on DF adoption, surface any Forecasting interest without hard pitch.</li>
+                  <li><span class="dot dot-r"></span>Internal: Flag the 1M-seat overprov data error to ops before April meeting — don't let a bad data point create confusion in the conversation.</li>
+                  <li><span class="dot dot-g"></span>"We're keeping an eye on your growth trajectory — when headcount expands, Forecasting becomes a natural next conversation."</li>
+                  <li><span class="dot dot-a"></span>Forecasting: All 11 accounts are missing it. Light mention is fine — don't over-invest sales time here at this RemTAM level.</li>
+                </ul>
+              </div>
+            </div>
+          </td></tr>
+
+          <!-- BIGCOMMERCE -->
+          <tr id="tr-big" onclick="tog('big')">
+            <td><span class="an">BigCommerce</span></td>
+            <td class="tc">50</td>
+            <td class="tc"><span class="tg tg-red">Red</span></td>
+            <td class="tc"><span class="tg tg-foc">1-Focus</span></td>
+            <td>Salesforce</td>
+            <td><div class="pills"><span class="p p-df">DF 110 seats</span></div></td>
+            <td><div class="pills"><span class="p p-sai">SalesAI</span><span class="p p-fc">Forecasting</span></div></td>
+            <td>—</td>
+            <td class="tr">$150,972</td>
+            <td class="tc"><span style="font-size:11px;color:#777;">Not scheduled</span></td>
+            <td class="tc"><span class="tg tg-lo">Low</span></td>
+            <td><button class="ebtn" id="btn-big">▼ Strategy</button></td>
+          </tr>
+          <tr class="dr-row" id="dr-big"><td class="dr-cell" colspan="12">
+            <div class="dr-inner">
+              <div class="db">
+                <div class="db-ttl">Strategy</div>
+                <ul class="db-list">
+                  <li><span class="dot dot-r"></span>Red health (50) — expansion is gated. Do NOT attempt to sell new products until engagement recovers to at least Yellow (60+).</li>
+                  <li><span class="dot dot-b"></span>RemTAM below $200K threshold AND Red health = lowest active priority in Jeff's book. Minimal time investment this cycle.</li>
+                  <li><span class="dot dot-a"></span>Involve Customer Success to diagnose and remediate low engagement. Sales should not be the primary motion here yet.</li>
+                  <li><span class="dot dot-g"></span>No Clari, no overprovisioned seats. No immediate transactional opportunities.</li>
+                  <li><span class="dot dot-b"></span>Reassess Q3. If health recovers and headcount grows, re-prioritize.</li>
+                </ul>
+              </div>
+              <div class="db">
+                <div class="db-ttl">Who to Contact</div>
+                <div class="chip"><span class="cn">Customer Success Manager</span><div class="ct">Health remediation owner — coordinate internally first</div><div class="cw">Goal: Understand root cause of Eng=50 before any sales outreach</div></div>
+                <div class="chip"><span class="cn">Sales Ops Lead at BigCommerce</span><div class="ct">DF champion — check adoption barriers</div><div class="cw">Goal: Surface obstacles and provide support</div></div>
+              </div>
+              <div class="db">
+                <div class="db-ttl">Talking Points</div>
+                <ul class="db-list">
+                  <li><span class="dot dot-r"></span>This is a health-first conversation, not a sales conversation. Lead with: "How's the team finding the product? Are there barriers I can help remove?"</li>
+                  <li><span class="dot dot-b"></span>Do not mention Forecasting or SalesAI expansion — it will read as tone-deaf at Eng=50.</li>
+                  <li><span class="dot dot-g"></span>Set a clear internal milestone: if health reaches 70+ by Q3, schedule an expansion conversation.</li>
+                  <li><span class="dot dot-a"></span>No meeting on calendar — reach out via email for a light health check, not a formal QBR.</li>
+                </ul>
+              </div>
+            </div>
+          </td></tr>
+
+        </tbody>
+      </table>
+    </div>
+
+  </div><!-- /sec -->
+
+  <div class="divider"></div>
+
+  <!-- PG SECTION -->
+  <div class="sec">
+    <div class="sec-ttl">PG — Deployed / Parked Accounts</div>
+    <div class="al al-blk" style="margin-bottom:12px;"><div>&#9711;</div><div class="al-b"><div class="al-ttl">6 Accounts Parked This Cycle — Protect Renewals &amp; Execute True-Ups</div>These accounts have RemTAM=$0 (fully deployed on DF) or are ICP 4-Beyond. They are NOT expansion targets this review cycle. Focus on renewal protection, health, and overprovisioned true-ups where applicable.</div></div>
+
+    <div class="pg-box">
+      <div class="pg-hdr" onclick="pgTog()"><span>&#9711; PG Accounts — 6 Accounts (Deployed / Parked)</span><span id="pg-arrow">▲ Collapse</span></div>
+      <div class="pg-body vis" id="pg-body">
+        <div class="tw">
+          <table>
+            <thead><tr>
+              <th>Account</th><th class="tc">Eng</th><th class="tc">Health</th><th>CRM</th>
+              <th>Current Products</th><th>Overprov / Notes</th><th class="tc">Next Mtg</th><th class="tc">Status</th>
+            </tr></thead>
+            <tbody>
+              <tr>
+                <td><span class="an">⚡ CrowdStrike</span></td>
+                <td class="tc">90</td>
+                <td class="tc"><span class="tg tg-grn">Green</span></td>
+                <td>Salesforce</td>
+                <td><div class="pills"><span class="p p-df">DF 1,700 seats</span></div></td>
+                <td><span class="tg tg-op">⚠ DF +100 seats — true-up</span> &nbsp; Clari in stack. Strategic account.</td>
+                <td class="tc"><span class="tg tg-mtg">Today 10:30</span></td>
+                <td class="tc"><span class="tg tg-dep">Deployed</span></td>
+              </tr>
+              <tr>
+                <td><span class="an">⚡ Flexera</span></td>
+                <td class="tc">80</td>
+                <td class="tc"><span class="tg tg-grn">Green</span></td>
+                <td>Salesforce</td>
+                <td><div class="pills"><span class="p p-df">DF 435 seats</span></div></td>
+                <td>FC Prov=7 (pilot, no entitlement) — convert to contract. Clari present. Small Enterprise.</td>
+                <td class="tc"><span class="tg tg-mtg">Today 11:00</span></td>
+                <td class="tc"><span class="tg tg-dep">Deployed</span></td>
+              </tr>
+              <tr>
+                <td><span class="an">Redis</span></td>
+                <td class="tc">90</td>
+                <td class="tc"><span class="tg tg-grn">Green</span></td>
+                <td>Salesforce</td>
+                <td><div class="pills"><span class="p p-df">DF 335 seats</span></div></td>
+                <td><span class="tg tg-op">⚠ DF +27 seats — true-up at renewal</span> &nbsp; Clari in stack.</td>
+                <td class="tc"><span class="tg tg-mtg">Today 12:30</span></td>
+                <td class="tc"><span class="tg tg-dep">Deployed</span></td>
+              </tr>
+              <tr>
+                <td><span class="an">⚡ Benchling</span></td>
+                <td class="tc">75</td>
+                <td class="tc"><span class="tg tg-ylw">Yellow</span></td>
+                <td>Salesforce</td>
+                <td><div class="pills"><span class="p p-df">DF 80 seats</span></div></td>
+                <td><span class="tg tg-op">⚠ DF +46 seats — true-up</span> &nbsp; FC Prov=1 (pilot). Small Enterprise.</td>
+                <td class="tc"><span class="tg tg-mtg">Tomorrow 11:30</span></td>
+                <td class="tc"><span class="tg tg-dep">Deployed</span></td>
+              </tr>
+              <tr>
+                <td><span class="an">Domo</span></td>
+                <td class="tc">85</td>
+                <td class="tc"><span class="tg tg-grn">Green</span></td>
+                <td>Salesforce</td>
+                <td><div class="pills"><span class="p p-df">DF 200 seats</span></div></td>
+                <td>No overprov. Near full utilization (192/200). Protect renewal. No Clari.</td>
+                <td class="tc"><span style="font-size:11px;color:#777;">Not scheduled</span></td>
+                <td class="tc"><span class="tg tg-dep">Deployed</span></td>
+              </tr>
+              <tr>
+                <td><span class="an">⚡ Pluralsight</span></td>
+                <td class="tc">90</td>
+                <td class="tc"><span class="tg tg-grn">Green</span></td>
+                <td>Salesforce</td>
+                <td><div class="pills"><span class="p p-df">DF 440 seats</span></div></td>
+                <td><span class="tg tg-ano">⚠ DF Overprov=1M — DATA ANOMALY</span> &nbsp; ICP 4-Beyond. Parked this cycle. Do not use overprov in pricing.</td>
+                <td class="tc"><span class="tg tg-mtg">Today 11:30</span></td>
+                <td class="tc"><span class="tg tg-pg">ICP Gated</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">Backstory · Powered by Backstory Glass &amp; Salesforce · David Park Territory · March 24, 2026 · Strict Mode — No fabricated data</div>
+</div>
+
+<script>
+function tog(id) {
+  var dr = document.getElementById('dr-' + id);
+  var btn = document.getElementById('btn-' + id);
+  var tr = document.getElementById('tr-' + id);
+  var vis = dr.classList.contains('vis');
+  if (vis) {
+    dr.classList.remove('vis'); btn.innerHTML = '▼ Strategy'; btn.classList.remove('open'); tr.classList.remove('open');
+  } else {
+    dr.classList.add('vis'); btn.innerHTML = '▲ Close'; btn.classList.add('open'); tr.classList.add('open');
+  }
+}
+function pgTog() {
+  var b = document.getElementById('pg-body');
+  var a = document.getElementById('pg-arrow');
+  if (b.classList.contains('vis')) {
+    b.classList.remove('vis'); a.innerHTML = '▼ Expand';
+  } else {
+    b.classList.add('vis'); a.innerHTML = '▲ Collapse';
+  }
+}
+</script>
+</body>
+</html>
