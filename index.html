@@ -87,7 +87,7 @@ body { font-family: 'Lexend', sans-serif; background: #1c1c1c; color: #f9f9f9; m
 <!-- PAGE VIEW -->
 <div id="pageView">
   <div id="pageBar">
-    <a onclick="goBack()">
+    <a href="./" onclick="event.preventDefault(); goBack();">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
       Back to Demos
     </a>
@@ -121,9 +121,18 @@ const PAGES = [
 
 const grid = document.getElementById('cardGrid');
 PAGES.forEach(p => {
-  const card = document.createElement('div');
+  // Anchor + onclick: if JS runs (normal hosting), openPage handles the
+  // iframe viewer. If a host sandbox blocks JS (e.g. some Google Sites
+  // embed configurations), the href still navigates the embed iframe
+  // directly to the demo, which is the desired fallback.
+  const card = document.createElement('a');
   card.className = 'demo-card';
-  card.onclick = () => openPage(p);
+  card.href = p.file;
+  card.addEventListener('click', (e) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
+    e.preventDefault();
+    openPage(p);
+  });
   card.innerHTML = `<span class="arrow">→</span><div class="card-label">${p.label}</div><div class="card-title">${p.title}</div><div class="card-desc">${p.desc}</div>`;
   grid.appendChild(card);
 });
